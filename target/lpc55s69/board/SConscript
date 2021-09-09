@@ -1,0 +1,44 @@
+Import('sblprofile')
+from building import *
+
+cwd = GetCurrentDir()
+
+# add the general drivers.
+src = Split("""
+board.c
+iap_flash_ops.c
+MCUX_Config/clock_config.c
+MCUX_Config/pin_mux.c
+
+""")
+
+CPPPATH = [cwd,cwd + '/MCUX_Config']
+LINKFLAGS = '../device/LPC55S69/arm/keil_lib_power_cm33_core0.lib --remove'
+
+CPPDEFINES = ['CPU_LPC55S69JBD100_cm33_core0', 'STD=C99', 'SKIP_SYSCLK_INIT', 'FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL']
+
+if GetDepend(['COMPONENT_MCU_ISP']):
+    CPPDEFINES.append('USB_STACK_BM')
+    CPPDEFINES.append('USB_STACK_USE_DEDICATED_RAM=1')
+
+if sblprofile.CROSS_TOOL == 'keil':
+    CPPDEFINES.append('__FPU_PRESENT=1')
+    
+if sblprofile.CROSS_TOOL == 'keil':
+    group = DefineGroup('board', src, depend = [''], CPPPATH = CPPPATH, CPPDEFINES=CPPDEFINES, LINKFLAGS = LINKFLAGS)
+elif sblprofile.CROSS_TOOL == 'gcc':
+    LIBS = ['power_hardabi']
+    cwd = GetCurrentDir()
+    LIBPATH = [cwd + '/../device/LPC55S69/gcc']
+    group = DefineGroup('board', src, depend = [''], CPPPATH = CPPPATH, CPPDEFINES=CPPDEFINES, LIBS=LIBS, LIBPATH=LIBPATH)
+else:
+    group = DefineGroup('board', src, depend = [''], CPPPATH = CPPPATH, CPPDEFINES=CPPDEFINES)
+
+
+list = os.listdir(cwd)
+
+for item in list:
+    if os.path.isfile(os.path.join(cwd, item, 'SConscript')):
+        group = group + SConscript(os.path.join(item, 'SConscript'))
+
+Return('group')

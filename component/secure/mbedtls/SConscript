@@ -1,0 +1,27 @@
+from building import *
+Import('sblprofile')
+
+# The set of source files associated with this SConscript file.
+cwd = GetCurrentDir()
+src = Glob('library/*.c')
+src += Glob('port/ksdk/*.c')
+CPPPATH = [cwd, cwd + "/include", cwd + "/port/ksdk"]
+
+config_file = GetConfigValue('SBL_MBEDTLS_CONFIG_FILE')
+config_name = "MBEDTLS_CONFIG_FILE="
+CPPDEFINES = []
+
+if GetDepend(['COMPONENT_MBEDTLS']):
+    if sblprofile.PLATFORM == 'iar':
+        CPPDEFINES = [config_name + config_file]
+    elif sblprofile.PLATFORM == 'armcc':
+        config_file = config_file.split('"')[1]
+        config_file = "\'" + '\\"' + config_file + '\\"' + "\'"
+        CPPDEFINES = [config_name + config_file]
+    else:
+        config_file = '\\"' + config_file + '\\"'
+        CPPDEFINES = [config_name + config_file]
+
+group = DefineGroup('mbedtls', src, depend = ['COMPONENT_MBEDTLS'], CPPPATH = CPPPATH, CPPDEFINES = CPPDEFINES)
+
+Return('group')

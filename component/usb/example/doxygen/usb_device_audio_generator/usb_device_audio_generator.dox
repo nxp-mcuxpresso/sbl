@@ -1,0 +1,78 @@
+/*!
+
+@addtogroup device_audio_example
+@{
+
+@defgroup device_audio_generator Audio Generator Example
+@{
+
+# Overview
+
+The USB Audio Generator application is a simple demonstration program based on the MCUXpresso SDK.
+It is enumerated as a recording device and users can record the sound from this device via the "Sound Recorder" in the Windows Accessories.
+
+
+# System Requirement
+
+## Hardware requirements
+
+- Mini/micro USB cable
+- USB A to micro AB cable
+- Hardware (Tower System/base module) for a specific device
+- Personal Computer(PC)
+
+
+## Software requirements
+
+- The project files for lite version examples are in the following path:
+@n <MCUXpresso_SDK_Install>/boards/<board>/usb_examples/usb_device_audio_generator_lite/<rtos>/<toolchain>.
+@n  For non-lite version examples, the path is:
+@n <MCUXpresso_SDK_Install>/boards/<board>/usb_examples/usb_device_audio_generator/<rtos>/<toolchain>.
+@note The <rtos> is Bare Metal or FreeRTOS OS.
+
+.
+
+# Getting Started
+
+## Hardware Settings
+
+@note Set the hardware jumpers (Tower system/base module) to default settings.
+
+.
+
+## Prepare the example
+
+1.  Download the program to the target board.
+2.  Connect the target board to the external power source (the example is self-powered).
+3.  Either press the reset button on your board or launch the debugger in the IDE to start running
+    the demo.
+4.  Connect a USB cable between the PC host and the USB device port on the board.
+
+For detailed instructions, see the appropriate board User's Guide.
+
+# Run the example in Windows
+
+1.  Plug-in the device which is running the Audio Generator example into the PC.
+2.  A USB AUDIO DEMO device shows up as enumerated in the Device Manager.
+3.  Right click on the sound control icon of the Start bar (close to the clock) and select the "Recording devices" option.
+@image html usb_device_audio_generator_right_click_icon.jpg
+@image latex usb_device_audio_generator_right_click_icon.jpg "Sound control icon"
+4.  In the pop-up window, select the "Microphone" device with the description "USB Audio Device" and click on the "Properties" button.
+@image html usb_device_audio_generator_select_properties.jpg
+@image latex usb_device_audio_generator_select_properties.jpg "Select properties"
+5.  On the new window, go to the "Levels" tab, and move the slide until 100%. Click "OK".
+@image html usb_device_audio_generator_change_level.jpg
+@image latex usb_device_audio_generator_change_level.jpg "Change level"
+6.  In the previous window, ensure that the "USB Audio Device" is still selected and click on the "Set Default" button. Finally, click on the "OK" button.
+@image html usb_device_audio_generator_set_default.jpg
+@image latex usb_device_audio_generator_set_default.jpg "Set default"
+7.  Open the "Sound Recorder" application and record audio for about 5-10 seconds.
+8.  After recording, open the recorder file with any media player. The sound is identical to the instance sound located in the memory.
+
+@note On Aruba which has DMIC module, please speaker to the DMIC when recording, the recorder file is the sound which is recorded by DMIC.
+
+@note When connected to MacBook<sup>®</sup>, change the PCM format from (0x02,0x00,) to (0x01,0x00, ) in <br/>g_config_descriptor[CONFIG_DESC_SIZE] in the usb_descriptor.c.
+Otherwise, it can't be enumerated and noise is present when recording with the QuickTime<sup>®</sup> player because the sampling frequency and bit resolution do not match.
+
+@}
+@} */

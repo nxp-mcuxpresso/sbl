@@ -1,0 +1,89 @@
+mainmenu "MCU-SBL LPC55S69 Configuration"
+
+config SBL_DIR
+    string
+    option env="SBL_ROOT"
+    default "../../"
+
+config SOC_LPC55S69_SERIES
+    bool
+    select ARCH_ARM_CORTEX_M33
+    select ARCH_ARM_CORTEX_FPU
+	select SOC_LPC_SERIES
+	
+config ARCH_ARM_CORTEX_M33
+    bool
+
+config ARCH_ARM_CORTEX_FPU
+    bool
+
+config SOC_LPC_SERIES
+    bool
+
+config COMPONENT_MCU_ISP
+    bool
+    select SOC_GPIO
+    select CONFIG_SOC_INPUTMUX
+    select CONFIG_SOC_PINT
+    select CONFIG_SOC_GINT
+
+source "$SBL_DIR/Kconfig"
+menu "Platform Drivers Config"
+
+config BOARD_FLASH_SUPPORT
+    bool "Board flash support"
+    default y
+    help
+        Select the flash board used.
+
+if BOARD_FLASH_SUPPORT
+    choice
+        prompt "Select the flash"
+        default INTERNAL_FLASH
+
+    endchoice
+endif
+
+config SOC_CPU_LPC55S69JBD100_cm33_core0
+    bool
+    select SOC_LPC55S69_SERIES
+    default y
+
+menu "On-chip Peripheral Drivers"
+
+    config SOC_GPIO
+        bool "Enable GPIO"
+        default n
+
+    menuconfig SOC_LPUART
+        bool "Enable UART"
+        default y
+        if SOC_LPUART
+            config SOC_LPUART_1
+                bool "Enable USART1"
+                default y
+            config SOC_LPUART_2
+                bool "Enable USART2"
+                default n
+        endif
+
+    config SOC_INPUTMUX
+        bool "Enable INPUTMUX"
+        default y
+
+    config SOC_PINT
+        bool "Enable PINT"
+        default y
+
+    config SOC_GINT
+        bool "Enable GINT"
+        default y
+
+endmenu
+
+
+menu "Board extended module Drivers"
+
+endmenu
+
+endmenu

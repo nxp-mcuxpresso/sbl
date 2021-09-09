@@ -1,0 +1,5 @@
+1.0.0
+  initial version.
+1.0.1
+  update the support for audio/debug accessory.
+  fix auto discovery cable support for emarked cable after pr swap.

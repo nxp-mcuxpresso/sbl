@@ -1,0 +1,74 @@
+import os
+Import('sblprofile')
+from building import *
+
+cwd = GetCurrentDir()
+group = []
+
+src_utilitie = Split('''
+MIMXRT1064/utilities/fsl_assert.c
+MIMXRT1064/utilities/debug_console/fsl_debug_console.c
+MIMXRT1064/utilities/str/fsl_str.c
+''')
+path = [cwd + '/CMSIS/Include', cwd + '/MIMXRT1064/utilities']
+path += [cwd + '/MIMXRT1064/utilities/debug_console', cwd + '/MIMXRT1064/utilities/str']
+group = DefineGroup('utilitie', src_utilitie, depend = [''], CPPPATH = path)
+
+src_device = Split('''
+MIMXRT1064/system_MIMXRT1064.c
+''')
+if sblprofile.CROSS_TOOL == 'gcc':
+    src_device += ['MIMXRT1064/gcc/startup_MIMXRT1064.S']
+elif sblprofile.CROSS_TOOL == 'keil':
+    src_device += ['MIMXRT1064/arm/startup_MIMXRT1064.S']
+elif sblprofile.CROSS_TOOL == 'iar':
+    src_device += ['MIMXRT1064/iar/startup_MIMXRT1064.s']
+path = [cwd + '/CMSIS/Include',cwd + '/MIMXRT1064']
+group =group + DefineGroup('device', src_device, depend = [''], CPPPATH = path)
+
+src_drivers = Split('''
+MIMXRT1064/drivers/fsl_common.c
+MIMXRT1064/drivers/fsl_clock.c
+MIMXRT1064/drivers/fsl_cache.c
+''')
+
+if GetDepend(['SOC_GPIO']):
+    src_drivers += ['MIMXRT1064/drivers/fsl_gpio.c']
+
+if GetDepend(['SOC_LPUART']):
+    src_drivers += ['MIMXRT1064/drivers/fsl_lpuart.c']
+
+if GetDepend(['SOC_I2C']):
+    src_drivers += ['MIMXRT1064/drivers/fsl_lpi2c.c']
+
+if GetDepend(['SOC_SPI']):
+    src_drivers += ['MIMXRT1064/drivers/fsl_lpspi.c']
+
+if GetDepend(['SOC_HWTIMER']) or GetDepend(['SOC_PWM']):
+    src_drivers += ['MIMXRT1064/drivers/fsl_gpt.c']
+
+if GetDepend(['SOC_RTC']):
+    src_drivers += ['MIMXRT1064/drivers/fsl_snvs_hp.c']
+    src_drivers += ['MIMXRT1064/drivers/fsl_snvs_lp.c']
+
+if GetDepend(['SOC_WDT']):
+    src_drivers += ['MIMXRT1064/drivers/fsl_wdog.c']
+    src_drivers += ['MIMXRT1064/drivers/fsl_rtwdog.c']
+
+if GetDepend(['SOC_SDRAM']):
+    src_drivers += ['MIMXRT1064/drivers/fsl_semc.c']
+
+if GetDepend(['SOC_USB_HOST']) or GetDepend(['SOC_USB_DEVICE']):
+    src_drivers += ['MIMXRT1064/drivers/fsl_usdhc.c']
+
+if GetDepend(['SOC_FLEXSPI']):
+    src_drivers += ['MIMXRT1064/drivers/fsl_flexspi.c']
+
+if GetDepend(['COMPONENT_MCUBOOT_SECURE']):
+    src_drivers += ['MIMXRT1064/drivers/fsl_dcp.c']
+    src_drivers += ['MIMXRT1064/drivers/fsl_trng.c']
+    
+path = [cwd + '/CMSIS/Include', cwd + '/MIMXRT1064', cwd + '/MIMXRT1064/drivers']
+group =group + DefineGroup('driver', src_drivers, depend = [''], CPPPATH = path)
+
+Return('group')

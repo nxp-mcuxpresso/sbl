@@ -1,0 +1,146 @@
+/*!
+
+@addtogroup device_ccid_example
+@{
+
+@defgroup device_ccid_smart_card CCID Smart Card Example
+@{
+
+# Overview
+
+The USB CCID smart card application is a simple demonstration program based on the MCUXpresso SDK and EMV library. It is enumerated as a smart card reader.
+
+# System Requirement
+
+## Hardware requirements
+
+- Mini/micro USB cable
+- USB A to micro AB cable
+- Hardware (Tower module/base board, and so on) for a specific device. \n Tower System module, including TWR-ELEV ( SECONDARY ELEVATOR and PRIMARY ELEVATOR ) , and TWR-POSTCARD (REV B).
+- Personal Computer(PC)
+
+
+## Software requirements
+
+- The path for the project files for lite version example is:
+@n <MCUXpresso_SDK_Install>/boards/<board>/usb_examples/usb_device_ccid_smart_card_lite/<rtos>/<toolchain>.
+@n  For non-lite version example, the path is:
+@n <MCUXpresso_SDK_Install>/boards/<board>/usb_examples/usb_device_ccid_smart_card/<rtos>/<toolchain>.
+@note The <rtos> is Bare Metal or FreeRTOS OS.
+
+- To get the PC Test tool "Snooper", go to http://www.microissuer.com/download_en.html , download, and install it.
+@n See the <a href="http://www.microissuer.com/download/Snooper.Spec-002-how_to_snoopery.pdf" title="Snooper.Spec-002-how to snoopery">Snooper.Spec-002-how to snoopery</a>
+and <a href="http://www.microissuer.com/download/Snooper.Spec-003-apdu_script_for_taoism.pdf" title="Snooper.Spec-003-apdu script for taoism">Snooper.Spec-003-apdu script for taoism</a>.
+@note The USB CCID smart card example is only tested using Microsoft Windows<sup>®</sup> 7 Enterprise X64. The "Smart Card Service" in services.msc must be started.
+
+.
+
+# Getting Started
+
+## Hardware Settings
+
+@note Set the hardware jumpers (Tower system/base module) to default settings.
+
+.
+
+## Prepare the example
+
+1.  Download the program to the target board.
+2.  Connect the target board to the external power source (the example is self-powered).
+3.  Power off the target board. Then, power on again.
+4.  Connect a USB cable between the PC and the USB device port of the board.
+
+@note For detailed instructions, see the appropriate board User's Guide.
+
+# Run the example
+
+1. Plug in the device, which is running the CCID smart card application, into the PC.
+A smart card reader device "Microsoft Usbccid Smartcard Reader (WUDF)" in "Smart card readers" shows up as enumerated in the Device Manager.\n
+For more information about the smart card readers driver, see <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/dn653571(v=vs.85).aspx" title="Microsoft Class Drivers for USB CCID Smart Cards">"Microsoft Class Drivers for USB CCID Smart Cards"</a>.
+@image html usb_device_ccid_smart_card_attached.jpg
+@image latex usb_device_ccid_smart_card_attached.jpg "The device is attached"
+2. Insert a smart card. The device notifies the host that the slot has changed. The host sends the CCID command "POWER ON" to enable the card and then gets the
+Answer to Reset (ATR) from the device.
+If the smart card is an EMV card, the device responds with the ATR data.
+Otherwise, the device rejects the card with a message "This card is not an EMV card", and responds with an error code "The card is not supported".
+If the card is valid (the ATR is valid), the host tries to recognize the card by sending the APDU level command.
+If the card is recognized, the host installs the diver for this card.
+Otherwise, the host can't install the driver. Users need to provide the specified driver for this card or use a generic smart card driver for the host.\n
+For the specified driver for the smart card, see <a href="https://msdn.microsoft.com/en-us/library/windows/hardware/dn631754" title="Smart Card Minidrivers">"Smart Card Minidrivers"</a>. \n
+If the device is not recognized by the host, follow these steps:
+    - When a smart card is inserted and the host doesn't recognize it, the smart card driver is not installed.
+@image html usb_device_ccid_smart_card_cannot_recognized.jpg
+@image latex usb_device_ccid_smart_card_cannot_recognized.jpg "The device can't be recognized"
+    - Install a user-provided smart card driver or an OS-provided generic smart card driver. \n
+    Right click on the smart card in the Device Manager-> Select "Properties"->Select "Update Driver" in Driver table->
+Select "Browse my computer for driver software"->Select "Let me pick from a list of devices drivers on my computer"->Select "Smart cards". \n
+For a specified driver, select "Have Disk..." and select the specified driver in the disk.
+\n For a generic driver, select "Identity Device (Microsoft Generic Profile)". When the driver is installed, the smart card works.
+@image html usb_device_ccid_smart_card_installed.jpg
+@image latex usb_device_ccid_smart_card_installed.jpg "The driver of the device is installed"
+3.  Open the test tool "Snooper.exe" and select the USB CCID smart card device "FREESCALE SEMICONDUCTOR INC. MCU CCID DEMO 0".
+@image html usb_device_ccid_smart_card_select_reader.jpg
+@image latex usb_device_ccid_smart_card_select_reader.jpg "Select the smart card reader" width=\textwidth
+The tool connects to slot 0 of the device.
+@image html usb_device_ccid_smart_card_connected.jpg
+@image latex usb_device_ccid_smart_card_connected.jpg "The slot 0 of the smart card reader is selected" width=\textwidth
+4.  Select the "Common Script Tool (regular edition) 00".
+@image html usb_device_ccid_smart_card_test_script.jpg
+@image latex usb_device_ccid_smart_card_test_script.jpg "Select the Common Script Tool"
+The form of the "Common Script Tool (regular edition) 00" is shown.
+@image html usb_device_ccid_smart_card_test_script2.jpg
+@image latex usb_device_ccid_smart_card_test_script2.jpg "The form of the Common Script Tool" width=\textwidth
+5.  Create a new blank script table and copy the test script to the table.
+@code
+clear
+
+reset
+
+auto_response on
+prompt on
+
+? "Test start"
+
+g_pse                       =                "1PAY.SYS.DDF01"
+
+? "Select PSE"
+00 a4 04 00 ($g_pse)
+if sw != 9000
+    pause
+endif
+set resp
+
+? "Read PSE"
+00 b2 01 0c 00
+
+if sw != 9000
+    pause
+endif
+
+
+set resp
+g_output_aid = gettlv( $resp, 70 61 4f )
+
+? "Select AID"
+00 a4 04 00 ( $g_output_aid )
+if sw != 9000
+    pause
+endif
+
+? "Test end"
+@endcode
+
+6.  Press "F7" to set script to top.
+7.  Click "RST" to reset the smart card.
+@image html usb_device_ccid_smart_card_test_script_reset.jpg
+@image latex usb_device_ccid_smart_card_test_script_reset.jpg "Reset the card" width=\textwidth
+8.  Click "Run" to start the test.
+@image html usb_device_ccid_smart_card_test_script3.jpg
+@image latex usb_device_ccid_smart_card_test_script3.jpg "Run the test script" width=\textwidth
+
+@note This example is tested using the PBOC specification compatibility card. The card must be compatible with ISO/IEC 7816-4.
+
+@}
+
+@}
+*/

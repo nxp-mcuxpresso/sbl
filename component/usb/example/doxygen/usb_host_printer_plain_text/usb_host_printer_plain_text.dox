@@ -1,0 +1,78 @@
+/*!
+@addtogroup host_printer_example
+@{
+
+@defgroup host_printer_plain_text Host printer plain text example
+@{
+
+# Overview
+
+The host printer example demonstrates how to get the status of the printer device
+and how to print a certain test string. Currently, it supports the virtual printer
+(see device_printer_virtual_plain_text applicatioin) and the real printer, which supports the PJL and postscript (for example, HP LaserJet P2055dn).
+PJL is one printer control protocol (PCP) from HP, postscript is one page description language (PDL) from Adobe.
+For the virtual printer, the test string is shown on the virtual printer side so that
+it is easy for the customer to verify the basic function of the printer. For the real printer,
+it has to be installed correctly to make sure that the content can be printed from the printer.
+Installing the printer is beyond the scope of this document.
+For more information, see the appropriate manuals.
+
+# System Requirement
+
+## Hardware requirements
+
+- Mini/micro USB cable
+- USB A to micro AB cable
+- Hardware (Tower module/base board, and so on) for a specific device
+- Personal Computer(PC)
+
+
+## Software requirements
+
+- The project path is:
+@n <MCUXpresso_SDK_Install>/boards/<board>/usb_examples/usb_host_printer_plain_text/<rtos>/<toolchain>.
+@note The <rtos> is Bare Metal or FreeRTOS OS.
+
+.
+
+# Getting Started
+
+
+## Hardware Settings
+
+@note Set the hardware jumpers (Tower system/base module) to default settings.
+
+.
+
+## Prepare the example
+
+1.  Download the program to the target board.
+2.  Power off the target board and power on again.
+3.  Connect devices to the board.
+
+@note For detailed instructions, see the appropriate board User's Guide.
+
+# Run the example
+
+1.  Connect the board UART to the PC and open the COM port in a terminal tool.
+2.  Plug in the HUB or the printer device to the board. The attached information prints out in the terminal.
+@note Two types of printer devices are supported: device_printer_virtual_plain_text demo device and
+the real printer that support PJL and postscript.
+3.  The terminal log is as follows:
+@image html usb_host_printer_output.jpg
+@image latex usb_host_printer_output.jpg "debug console output"
+4.  If the device is a real printer which supports both PJL and postscript,
+The "NXP host printer test" string is printed.
+@image html usb_host_printer_print.jpg
+@image latex usb_host_printer_print.jpg "real print"
+If the device is a real printer which does not support PJL and postscript,
+the "unsupported printer language" is output in the terminal log.
+If the device is device_printer_virtual_plain_text virtual printer, the following is output in the device's debug console
+terminal.
+@n @verbatim
+                file name
+        NXP host printer test@endverbatim
+@endverbatim
+
+@}
+@} */

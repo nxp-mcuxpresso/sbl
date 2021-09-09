@@ -1,0 +1,115 @@
+[Version]
+Signature = "$Windows NT$"
+Class =USB
+ClassGuid={36fc9e60-c465-11cf-8056-444553540000}
+Provider = %ProviderName%
+DriverVer=08/06/2009,7.0.7600.16385
+CatalogFile=DFUdevice.cat
+
+; ================== Class section ==================
+
+[ClassInstall32]
+Addreg=MyDeviceClassReg
+
+[MyDeviceClassReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,-1
+
+; ========== Manufacturer/Models sections ===========
+
+[Manufacturer]
+%ProviderName% = NXP_WinUSB,NTx86,NTamd64,NTia64
+
+[NXP_WinUSB.NTx86]
+%DFUDEV% =USB_Install, USB\VID_1FC9&PID_00A1
+%DFUDEV% =USB_Install, USB\VID_2710&PID_2710
+
+[NXP_WinUSB.NTamd64]
+%DFUDEV%  =USB_Install, USB\VID_1FC9&PID_00A1
+%DFUDEV%  =USB_Install, USB\VID_2710&PID_2710
+
+[NXP_WinUSB.NTia64]
+%DFUDEV%  =USB_Install, USB\VID_1FC9&PID_00A1
+%DFUDEV%  =USB_Install, USB\VID_2710&PID_2710
+
+; =================== Installation ===================
+
+;[1]
+[USB_Install]
+Include=winusb.inf
+Needs=WINUSB.NT
+
+;[2]
+[USB_Install.Services]
+AddService=WinUSB,0x00000002,WinUSB_ServiceInstall
+
+;[3]
+[WinUSB_ServiceInstall]
+DisplayName     = %WinUSB_SvcDesc%
+ServiceType     = 1
+StartType       = 3
+ErrorControl    = 1
+ServiceBinary   = %12%\WinUSB.sys
+
+;[4]
+[USB_Install.Wdf]
+KmdfService=WINUSB, WinUsb_Install
+UmdfServiceOrder = WINUSB
+
+[WinUSB_Install]
+KmdfLibraryVersion=1.9
+
+;[5]
+[USB_Install.HW]
+AddReg=Dev_AddReg
+
+[Dev_AddReg]
+HKR,,DeviceInterfaceGUIDs,0x10000,"{a01674b4-c5f6-485c-af94-3271701d57b4}"
+
+;[6]
+[USB_Install.CoInstallers]
+AddReg=CoInstallers_AddReg
+CopyFiles=CoInstallers_CopyFiles
+
+[CoInstallers_AddReg]
+HKR,,CoInstallers32,0x00010000,"WUDFUpdate_01009.dll","WinUSBCoInstaller2.dll","WdfCoInstaller01009.dll,WdfCoInstaller"
+
+[CoInstallers_CopyFiles]
+WUDFUpdate_01009.dll
+WinUSBCoInstaller2.dll
+WdfCoInstaller01009.dll
+
+[DestinationDirs]
+CoInstallers_CopyFiles=11
+
+; ================= Source Media Section =====================
+;[7]
+
+[SourceDisksNames]
+1 = %DISK_NAME%,,,\x86
+2 = %DISK_NAME%,,,\amd64
+3 = %DISK_NAME%,,,\ia64
+
+[SourceDisksFiles.x86]
+WUDFUpdate_01009.dll=1
+WinUSBCoInstaller2.dll=1
+WdfCoInstaller01009.dll=1
+
+[SourceDisksFiles.amd64]
+WUDFUpdate_01009.dll=2
+WinUSBCoInstaller2.dll=2
+WdfCoInstaller01009.dll=2
+
+[SourceDisksFiles.ia64]
+WUDFUpdate_01009.dll=3
+WinUSBCoInstaller2.dll=3
+WdfCoInstaller01009.dll=3
+
+; =================== Strings ===================
+
+[Strings]
+ProviderName="NXP"
+ClassName="DFU_Device"
+DFUDEV="NXP DFU device"
+WinUSB_SvcDesc="winUSB"
+DISK_NAME="Drivers"

@@ -1,0 +1,34 @@
+from building import *
+
+cwd = GetCurrentDir()
+
+# add the general drivers.
+#src = Glob('src/*.c')
+
+# add the common files.
+src = Split("""
+src/bootutil_misc.c
+src/caps.c
+src/loader.c
+src/fault_injection_hardening.c
+src/fault_injection_hardening_delay_rng_mbedtls.c
+src/swap_misc.c
+src/swap_move.c
+src/swap_scratch.c
+src/tlv.c
+""")
+
+if GetDepend(['CONFIG_BOOT_SIGNATURE']):
+    src += ['./src/image_validate.c']
+
+if GetDepend(['CONFIG_BOOT_SIGNATURE_TYPE_RSA']):
+    src += ['./src/image_rsa.c']
+
+if GetDepend(['CONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256']):
+    src += ['./src/image_ec256.c']
+
+CPPPATH = [cwd, cwd + '/include', cwd + '/src']
+
+group = DefineGroup('bootutil', src, depend = [''], CPPPATH = CPPPATH)
+
+Return('group')

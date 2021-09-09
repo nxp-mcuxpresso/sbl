@@ -1,0 +1,20 @@
+from building import *
+
+cwd = GetCurrentDir()
+CPPPATH = [cwd]
+
+src = Split('''
+serial_manager.c
+''')
+
+if GetDepend(['COMPONENT_SERIAL_MANAGER_LPUART']):
+    src += ['serial_port_uart.c']
+
+if GetDepend(['COMPONENT_SERIAL_MANAGER_USB']):
+    src += ['serial_port_usb.c']
+    src += ['usb_cdc_adapter/usb_device_descriptor.c']
+    CPPPATH += [cwd + '/usb_cdc_adapter']
+
+group = DefineGroup('serial_manager', src, depend = ['COMPONENT_SERIAL_MANAGER'], CPPPATH = CPPPATH)
+
+Return('group')

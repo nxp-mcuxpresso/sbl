@@ -1,0 +1,56 @@
+/*!
+@addtogroup pd_example
+@{
+
+@defgroup pd_alt_mode_dp_host USB PD DisplayPort example
+@{
+
+# Overview
+
+This PD example is a simple demonstration based on the MCUXpresso SDK PD stack.
+@n The application use the mead host board (om13585) to implement the DisplayPort alternate mode.
+It recognize attached video adapters (like "Type-C to DisplayPort" or "Type-C to HDMI"), and drive the adapter to work.
+
+# System Requirement
+
+## Hardware requirements
+
+- Two Type-C mead host boards
+- Two 19V DC power suppliers
+- Type-C Cable
+- Two hardwares (Tower module/base board, and so on) for a specific device, for example: two lpcxpresso54114 boards
+- Personal Computer
+
+
+## Software requirements
+
+- The project files are in: 
+@n <MCUXpresso_SDK_Install>/boards/<board>/usb_examples/usb_pd_alt_mode_dp_host/<rtos>/<toolchain>.
+@note The <rtos> is Bare Metal or FreeRTOS OS.
+- Terminal tool.
+
+
+# Getting Started
+
+## Hardware Settings
+
+@n For detailed instructions, see the appropriate board User's Guide.
+@note Please reference to the re-workd document for hardware seetings.
+
+
+## Prepare the example
+
+1.  For MCUXpresso, please reference to the MCUXpresso SDK USB Type-C PD Stack User's Guide to make sure the SDK_DEBUGCONSOLE = 1 in project settings.
+2.  Download the program to the target board.
+3.  Power on mead host board then power on development board.
+
+# Run the example
+
+1.  Download this program to the board.
+2.  Connect the video source (like: PC) to the MinDP port (J5).
+3.  Connect one video adapter (like: "Type-C to DisplayPort" or "Type-C to HDMI") to the Type-C port (J1).
+4.  Connect one displayer to the adapter.
+    For example: if the adapter is one "Type-C to DisplayPort" adapter, connect displayer to the adapter with one DisplayPort cable.
+5.  The video source (PC) will recognize the displayer and the displayer works.
+@}
+@} */

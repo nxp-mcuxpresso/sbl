@@ -1,0 +1,134 @@
+/*!
+
+@addtogroup device_cdc_example
+@{
+
+@defgroup dev_cdc_vnic Virtual NIC Example
+@details This example application demonstrates the USB CDC Virtual NIC example.
+@{
+
+# Overview
+
+The Virtual NIC project is a simple demonstration program based on the MCUXpresso SDK.  It is enumerated as a network adapter. Users can access the network by properly configuring this network adapter. The purpose of this demo is to show how to build a device of USB CDC class to implement RNDIS protocol and to provide a simple project for further development.
+
+
+# System Requirement
+
+## Hardware requirements
+
+- Mini/micro USB cable
+- USB A to micro AB cable
+- Hardware (Tower module/base board, and so on) for a specific device
+- Personal Computer
+
+
+## Software requirements
+
+- The project files are in:
+@n <MCUXpresso_SDK_Install>/boards/<board>/usb_examples/usb_device_cdc_vnic/<rtos>/<toolchain>.
+@n For lite version, the project files are in:
+@n <MCUXpresso_SDK_Install>/boards/<board>/usb_examples/usb_device_cdc_vnic_lite/<rtos>/<toolchain>.
+@note The <rtos> is Bare Metal or FreeRTOS OS.
+
+.
+
+# Getting Started
+
+## Hardware Settings
+
+@note Set the hardware jumpers (Tower system/base module) to default settings.
+
+.
+
+## Prepare the example 
+
+1.  Download the program to the target board.
+2.  Either press the reset button on your board or launch the debugger in your IDE to begin running
+    the demo.
+3.  Plug in the network cable before running this example. (Or you may have to disable and then enable the RNDIS network adapter after you plug in the network cable.)
+4.  Connect the PC host and the USB device port on the board using a network cable.
+
+@note For detailed instructions, see the appropriate board User's Guide.
+@n    Duo to the speed missmatch between usb and enet, some enet frame will be discard when lots of data are received in short time, this issue is obvious, especially on Full speed usb. 
+@n    The upper layer protocl will handle this issue, such as TCP/IP protcol. 
+@n    Based on the test on TWR-K65,add the buffer number to receive enet frame data could reduce the discard frame, user may add the buffer number if ram is enough.
+
+# Run the example in Windows<sup>®</sup>
+
+1.  A network adapter is enumerated in Device Manager. 
+@image html vnic_device_manager.jpg "Virtual NIC in device manager"
+@image latex vnic_device_manager.jpg "Virtual NIC in device manager" width=\textwidth
+2.  In *Control Panel\\Network and Internet\\Network Connections*, the RNDIS network adapter is listed as below.
+@image html vnic_network_connection.jpg "Virtual NIC in Network Connections"
+@image latex vnic_network_connection.jpg "Virtual NIC in Network Connections"
+3.  Connect your board with a test PC using a network cable. The IP address of this PC is known as 192.168.1.102. Then configure the RNDIS adapter in Windows for your PC host. For this testing example, please make sure your PC host and the test PC are in the same network segment. E.g
+@image html vnic_config.jpg "Virtual NIC configuration"
+@image latex vnic_config.jpg "Virtual NIC configuration"
+
+Then you are supposed to access the test PC through this USB RNDIS network adapter.
+@image html vnic_ping_windows.jpg "Ping to other PC"
+@image latex vnic_ping_windows.jpg "Ping to other PC"
+
+# Note
+1.  The VNIC CIC CLASS code can be changed to wireless controller class code (0xE0), like:
+@n    #define USB_CDC_VNIC_CIC_CLASS (0xE0)
+@n    #define USB_CDC_VNIC_CIC_SUBCLASS (0x01)
+@n    #define USB_CDC_VNIC_CIC_PROTOCOL (0x03)
+@n	Then there is no need to install inf file and the USB protocol suite can recognize the RNDIS and OID messages directly, but this is not verified under all conditions.
+
+
+# Installing the RNDIS driver for virtual_nic example
+Below are the steps to install the RNDIS driver on Windows 7. Similar steps apply for Windows XP.
+
+Step 1. Click "Update Driver Software..."
+
+@image html rndis_driver_install_00.jpg
+@image latex rndis_driver_install_00.jpg "" width=\textwidth
+
+Step 2. Choose "Browse..."
+
+@image html rndis_driver_install_01.jpg
+@image latex rndis_driver_install_01.jpg "" width=\textwidth
+
+Step 3. Select "Let me pick..."
+
+@image html rndis_driver_install_02.jpg
+@image latex rndis_driver_install_02.jpg "" width=\textwidth
+
+Step 4. Navigate to your RNDIS driver location.
+
+<install_dir>\\boards\\<board>\\usb_examples\\usb_device_cdc_vnic\\inf
+
+or
+
+<install_dir>\\boards\\<board>\\usb_examples\\usb_device_cdc_vnic_lite\\inf
+
+
+@image html rndis_driver_install_03.jpg
+@image latex rndis_driver_install_03.jpg "" width=\textwidth
+
+Step 5. Press "Next".
+
+@image html rndis_driver_install_04.jpg
+@image latex rndis_driver_install_04.jpg "" width=\textwidth
+
+Step 6. Ignore the warning and press "Yes".
+
+@image html rndis_driver_install_05.jpg
+@image latex rndis_driver_install_05.jpg "" width=\textwidth
+
+Step 7. Now the RNDIS driver should be installed successfully.
+
+@image html rndis_driver_install_06.jpg
+@image latex rndis_driver_install_06.jpg "" width=\textwidth
+
+- If a driver signature issue occurs on Windows 8 OS,  see the link,\n
+[Disabling Driver Signature on Windows 8](https://learn.sparkfun.com/tutorials/disabling-driver-signature-on-windows-8/disabling-signed-driver-enforcement-on-windows-8)
+- To enable driver signing on Windows OS, see the link,
+  + <a href="msdn.microsoft.com/en-us/library/windows/hardware/ff544865(v=vs.85.aspx)">Driver Signing</a>
+  + [Practical Windows Code and Driver Signing](http://www.davidegrayson.com/signing/#howto)
+
+*/
+
+/*! @} */
+/*! @} */

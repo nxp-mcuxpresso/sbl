@@ -1,0 +1,123 @@
+/*!
+@addtogroup host_suspend_resume_full_example
+@{
+
+@defgroup suspend_resume_full_host_hid_mouse Suspend/Resume HID mouse example
+@{
+
+# Overview
+
+The Suspend/Resume USB Host HID example is a simple demonstration program based on the MCUXpresso SDK.
+The host will release the USB bus and enter into the low power mode when user needs to suspend the USB bus.
+The host can be waked up by a switch or the resume signal delivered by the device if the remote wake-up feature is enabled.
+The host will wake up the device by delivering the resume signal if it is waked up by a switch.
+
+@n The application supports the mouse device.
+
+# System Requirement
+
+## Hardware requirements
+
+- Mini/micro USB cable
+- USB A to micro AB cable
+- Hardware (Tower module/base board, and so on) for a specific device
+- Personal Computer (PC)
+
+
+## Software requirements
+
+- The project path is:
+@n <MCUXpresso_SDK_Install>/boards/<board>/usb_examples/usb_suspend_resume_full_host_hid_mouse/<rtos>/<toolchain>.
+@note The <rtos> is Bare Metal or FreeRTOS OS.
+
+.
+
+# Getting Started
+
+## Hardware Settings
+
+@note Set the hardware jumpers (Tower system/base module) to default settings.
+
+.
+
+## Prepare the example 
+
+1.  Download the program to the target board.
+2.  Power off the target board and power on again.
+3.  Connect devices to the board.
+
+@note For detailed instructions, see the appropriate board User's Guide.
+@note Host hid example doesn't support HID report descriptor analysis, this example assume that the device data are sent by specific order. 
+      @n For more detail, please refer to the code. For the device list we tested,
+      @n please refer to chapter "Peripheral devices tested with the USB Host stack" in "SDK Release Notes xxxx(board name)".
+
+# Run the example
+
+1.  Connect the board UART to the PC and open the COM port in a terminal tool.
+2.  Plug in the mouse device to the board. The attached information prints out in the terminal.
+3.  The mouse operation information prints in the terminal when you operate the mouse.
+    @n The application prints the mouse operation information in one line. Each line contains the following sequential string:
+    "Left Click", "Middle Click", "Right Click", "Right"/"Left" movement, "UP"/"Down" movement and "Wheel Down"/"Wheel Up" movement.
+    White space replaces the above string if the mouse doesn't have the corresponding operation.
+    @n For example, when the mouse moves right and up,
+    @n @verbatim "                                  Right UP             "@endverbatim
+    @n prints in the terminal.
+
+4.  Suspend
+    Start to suspend the bus by entering character 's'. And then select whether enable the remote wake-up feature and set/clear the feature if the device supports the feature.
+    And then release the USB bus and enter into the low power mode.
+    For example, if the name of wakeup switch is "SW3", the debug console output is as following. 
+        @note The name of wakeup switch is showed in debug console.
+    @n
+    @code
+        host init done, the host stack version is 1.0.0.
+        Please Enter 's' to start suspend test
+        hid mouse attached:pid=0x7cvid=0x1fc9 address=1
+        mouse attached
+                                                Down
+                                                Down
+        ...
+                                                UP
+        Start suspend USB BUS...
+
+        Please Enter:
+            1. Enable remote wakeup feature.
+            2. Disable remote wakeup feature.
+                                                UP
+        ...
+                                                UP
+                                                UP
+        1Remote wakeup feature set.
+        BUS has been suspended.
+        Please Press wakeup switch(SW3) to start resume test.
+        Or, wait for device sends resume signal.
+    @endcode
+
+5.  Resume
+    The host is waked up and starts to deliver the resume signal when the wake up source is the wakeup switch.
+    For example, if the name of wakeup switch is "SW3", the debug console output is as following. 
+        @note The name of wakeup switch is showed in debug console.
+    @n
+    @code
+        BUS has been suspended.
+        Please Press wakeup switch(SW3) to start resume test.
+        Start resume the device.
+        BUS has been resumed.
+                                                UP
+                                                UP
+    @endcode
+    Or the host is waked up when the resume signal is detected on the bus.
+    @code
+        BUS has been suspended.
+        Please Press wakeup switch(SW3) to start resume test.
+        Or, wait for device sends resume signal.
+        BUS has been resumed.
+                                                Down
+                                                Down
+    @endcode
+
+
+@}
+
+@}
+*/

@@ -1,0 +1,48 @@
+/*!
+@addtogroup usb_host_hid_drv The USB Human Interface Devices (or USB HID)
+@{
+@details  The USB HID consists primarily of devices that are used by humans to control 
+the operation of computer systems. Typical examples of HID class devices include keyboard and mouse. 
+This section describes the programming interface of the USB HOST HID class driver.
+The USB HOST HID class driver handles the specific control requests for HID class and transfers data to and from the device through the interrupt pipe.
+
+# USB Host HID Initialization {#USBHostHidInit}
+
+When the HID device is attached, the HID initialization flow is as follows:
+@image latex host_hid_initialization.jpg "Host HID Initialization"
+
+The above picture describes the following steps:
+    - Call the USB_HostHidInit to initialize the HID class instance #usb_host_hid_instance_t and the return class handle pointer to the HID class instance.
+      The driver uses an instantiation of the usb_host_hid_instance_t structure to maintain the current state of a HID instance module driver. 
+      This structure holds the USB host handle and the USB device handle and keeps track of transfer information, alternate setting, pipes 
+      and interfaces that are enumerated for attached HID device.
+    - Call the USB_HostHidSetInterface to set the HID class interface, which opens the interface's pipes.
+    - Wait the last step operation callback.
+    - Call the USB_HostHidSetIdle to set the HID device.
+    - Wait the last step operation callback.
+    - Call the USB_HostHidGetReportDescriptor to get the HID report descriptor.
+    - Wait the last step operation callback.
+    - Call the USB_HostHidSetProtocol to set protocol.
+    - Wait the last step operation callback.
+    - Call the USB_HostHidRecv to receive data from the device, or call USB_HostHidSend to send data to the device.
+    - Wait the last step operation callback.
+    - Process data and receive or send again.
+
+# USB Host HID Deinitialization {#USBHostHidDeinit}
+
+An application calls the USB_HostHidDeinit to deinitialize the HID. This function cancels the transfer, closes the pipe, and releases the HID class instance.
+@n There are two use cases to call this function: 
+- The HID device is detached and this function is called to release the resource.
+- An application calls this function and calls the USB_HostHidInit to reinitialize the HID class.
+
+# USB Host HID Send data{#USBHostHidSend}
+
+Provides the buffer pointer, the buffer length, the callback function, and the callback parameter and calls the USB_HostHidSend to start asynchronous sending.
+Then, the callback function is called with one transfer status parameter when the transfer succeeds or fails. 
+
+# USB Host HID Receive data{#USBHostHidReceive}
+
+Provides the buffer pointer, the buffer length, the callback function, and the callback parameter and calls the USB_HostHidRecv to start asynchronous receiving.
+Then, the callback function is called with one transfer status parameter when the transfer succeeds or fails. 
+
+@} */

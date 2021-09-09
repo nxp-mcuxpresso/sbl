@@ -1,0 +1,76 @@
+import os
+Import('sblprofile')
+from building import *
+
+cwd = GetCurrentDir()
+group = []
+
+src_utilitie = Split('''
+LPC55S69/utilities/fsl_assert.c
+LPC55S69/utilities/debug_console/fsl_debug_console.c
+LPC55S69/utilities/str/fsl_str.c
+''')
+path = [cwd + '/CMSIS/Include', cwd + '/LPC55S69/utilities']
+path += [cwd + '/LPC55S69/utilities/debug_console', cwd + '/LPC55S69/utilities/str']
+group = DefineGroup('utilitie', src_utilitie, depend = [''], CPPPATH = path)
+
+src_device = Split('''
+LPC55S69/system_LPC55S69_cm33_core0.c
+''')
+if sblprofile.CROSS_TOOL == 'gcc':
+    src_device += ['LPC55S69/gcc/startup_LPC55S69_cm33_core0.S']
+elif sblprofile.CROSS_TOOL == 'keil':
+    src_device += ['LPC55S69/arm/startup_LPC55S69_cm33_core0.s']
+elif sblprofile.CROSS_TOOL == 'iar':
+    src_device += ['LPC55S69/iar/startup_LPC55S69_cm33_core0.s']
+path = [cwd + '/CMSIS/Include',cwd + '/LPC55S69']
+group =group + DefineGroup('device', src_device, depend = [''], CPPPATH = path)
+
+src_drivers = Split('''
+LPC55S69/drivers/fsl_common.c
+LPC55S69/drivers/fsl_clock.c
+LPC55S69/drivers/fsl_flexcomm.c
+LPC55S69/drivers/fsl_power.c
+LPC55S69/drivers/fsl_reset.c
+LPC55S69/drivers/fsl_casper.c
+LPC55S69/drivers/fsl_hashcrypt.c
+LPC55S69/drivers/fsl_puf.c
+LPC55S69/drivers/fsl_iap.c
+LPC55S69/drivers/fsl_prince.c
+LPC55S69/drivers/fsl_rng.c
+''')
+
+if GetDepend(['SOC_GPIO']):
+    src_drivers += ['LPC55S69/drivers/fsl_gpio.c']
+
+if GetDepend(['SOC_LPUART']):
+    src_drivers += ['LPC55S69/drivers/fsl_usart.c']
+
+if GetDepend(['SOC_I2C']):
+    src_drivers += ['LPC55S69/drivers/fsl_lpi2c.c']
+
+if GetDepend(['SOC_SPI']):
+    src_drivers += ['LPC55S69/drivers/fsl_lpspi.c']
+
+if GetDepend(['SOC_WDT']):
+    src_drivers += ['LPC55S69/drivers/fsl_wdog.c']
+
+if GetDepend(['SOC_USB_HOST']) or GetDepend(['SOC_USB_DEVICE']):
+    src_drivers += ['LPC55S69/drivers/fsl_usdhc.c']
+
+if GetDepend(['SOC_CRC']):
+    src_drivers += ['LPC55S69/drivers/fsl_crc.c']
+
+if GetDepend(['SOC_INPUTMUX']):
+    src_drivers += ['LPC55S69/drivers/fsl_inputmux.c']
+
+if GetDepend(['SOC_PINT']):
+    src_drivers += ['LPC55S69/drivers/fsl_pint.c']
+
+if GetDepend(['SOC_GINT']):
+    src_drivers += ['LPC55S69/drivers/fsl_gint.c']
+
+path = [cwd + '/CMSIS/Include', cwd + '/LPC55S69', cwd + '/LPC55S69/drivers']
+group =group + DefineGroup('driver', src_drivers, depend = [''], CPPPATH = path)
+
+Return('group')

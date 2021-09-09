@@ -1,0 +1,17 @@
+from building import *
+
+cwd = GetCurrentDir()
+CPPPATH = [cwd]
+
+if GetDepend(['SOC_IMXRTYYYY_SERIES']):
+    src = ['lpuart_adapter.c']
+
+if GetDepend(['SOC_LPC_SERIES']):
+    src = ['usart_adapter.c']
+
+if GetDepend(['SOC_IMXRTXXX_SERIES']):
+    src = ['usart_adapter.c']
+
+group = DefineGroup('uart-adapter', src, depend = [], CPPPATH = CPPPATH)
+
+Return('group')

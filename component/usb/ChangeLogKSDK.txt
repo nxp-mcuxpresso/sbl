@@ -1,0 +1,154 @@
+/*!
+@page middleware_log Middleware Change Log
+
+@section USB USB stack for KSDK
+  Current version of USB stack is 1.9.0
+
+  - 1.0.0
+    - New Features:
+      - Supported roles
+        - Device
+        - Host
+
+      - Supported controllers
+        - KHCI (Full Speed)
+        - EHCI (High Speed)
+
+      - Supported classes
+        - AUDIO
+        - CCID
+        - CDC
+        - HID
+        - MSC
+        - PHDC
+        - VIDEO
+
+      - Examples
+        - usb_device_audio_generator
+        - usb_device_audio_speaker
+        - usb_device_ccid_smart_card
+        - usb_device_cdc_vcom
+        - usb_device_cdc_vnic
+        - usb_device_composite_cdc_msc
+        - usb_device_composite_hid_audio
+        - usb_device_composite_hid_mouse_hid_keyboard
+        - usb_device_hid_generic
+        - usb_device_hid_mouse
+        - usb_device_msc_ramdisk
+        - usb_device_msc_sdcard
+        - usb_device_phdc_weighscale
+        - usb_device_video_flexio_ov7670
+        - usb_device_video_virtual_camera
+        - usb_host_audio_speaker
+        - usb_host_cdc
+        - usb_host_hid_generic
+        - usb_host_hid_mouse
+        - usb_host_hid_mouse_keyboard
+        - usb_host_msd_command
+        - usb_host_msd_fatfs
+        - usb_host_phdc_manager
+        - usb_keyboard2mouse
+        - usb_pin_detect_hid_mouse
+
+  - 1.0.1
+    - Bug Fix:
+      - Improve the efficiency of device audio speaker by changing the transfer mode from interrupt to dma thus can eliminate the periodic noise.
+
+  - 1.1.0
+    - Bug Fix:
+      - Fix some issues in USB certification.
+      - Change VID and Manufacturer string to NXP.
+
+    - New Features:
+      - Supported classes
+        - Pinter
+
+      - Examples
+        - usb_device_composite_cdc_msc_sdcard
+        - usb_device_printer_virtual_plain_text
+        - usb_host_printer_plain_text
+
+  - 1.2.0
+    - New Features:
+      - Supported controllers
+        - LPC IP3511 (Full Speed, Device mode)
+
+  - 1.3.0
+    - New Features:
+      - Supported roles
+        - OTG
+
+      - Supported classes
+        - CDC RNDIS
+
+      - Examples
+        - usb_otg_hid_mouse
+        - usb_device_cdc_vnic
+        - usb_suspend_resume_device_hid_mouse
+        - usb_suspend_resume_host_hid_mouse
+
+  - 1.4.0
+    - New Features:
+      - Examples
+        - usb_device_hid_mouse/freertos_static
+        - usb_suspend_resume_device_hid_mouse_lite
+
+  - 1.5.0
+    - New Features:
+      - Supported controllers
+        - OHCI (Full Speed, Host mode)
+        - IP3516 (High Speed, Host mode)
+        - IP3511 (High Speed, Device mode)
+
+      - Examples
+        - usb_lpm_device_hid_mouse
+        - usb_lpm_device_hid_mouse_lite
+        - usb_lpm_host_hid_mouse
+
+  - 1.6.0
+    - New Features:
+      - Supported Device Charger Detect feature on usb_device_hid_mouse
+
+  - 1.6.1
+    - New Features:
+    - Change the struct variable address method for device_video_virtual_camera and host_phdc_manager
+
+    1.6.2
+    - New Features:
+      - Multi instance support
+
+    1.6.3
+    - Bug Fix:
+      -IP3511_HS driver control transfer sequence issue, enable 3511 ip cv test.
+
+    1.7.0
+    - New Features:
+      - USB PD stack support.
+
+    - Examples
+      - usb_pd
+      - usb_pd_battery
+      - usb_pd_source_charger
+
+    1.8.0
+    - New Features:
+      - Examples
+        - usb_device_composite_cdc_vcom_cdc_vcom
+        - usb_device_composite_hid_audio_unified
+        - usb_pd_sink_battery
+        - Change usb_pd_battery to usb_pd_charger_battery
+
+    - Bug Fix:
+      - Code clean up, remove some irrelevant code.
+    1.8.1
+    - Bug Fix:
+      - verify some hardware issues, support aruba_flashless.
+
+    1.8.2
+    - update licnese.
+
+    1.9.0
+    - New Features:
+      - Examples
+        - usb_pd_alt_mode_dp_host
+*/

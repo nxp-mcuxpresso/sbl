@@ -1,0 +1,81 @@
+from building import *
+Import('sblprofile')
+
+# The set of source files associated with this SConscript file.
+src = Split('''
+autobaud/src/autobaud_irq.c
+bootloader/src/bl_command.c
+bootloader/src/bl_context.c
+bootloader/src/bl_exception_handler.c
+bootloader/src/bl_main.c
+bootloader/src/bl_misc.c
+bootloader/src/bl_peripheral.c
+bootloader/src/bl_shutdown_cleanup.c
+crc/src/crc16.c
+crc/src/crc32.c
+memory/src/memory.c
+memory/src/normal_memory.c
+packet/src/serial_packet.c
+startup/startup.c
+bm_usb/composite.c
+bm_usb/hid_bootloader.c
+bm_usb/msc_disk.c
+utilities/src/fsl_rtos_abstraction.c
+''')
+
+if sblprofile.PLATFORM == 'iar':
+    src += ['memory/src/pattern_fill.s']
+else:
+    src += ['memory/src/pattern_fill_gcc.S']
+
+cwd = GetCurrentDir()
+CPPPATH = [cwd,
+           cwd + "/api_tree",
+           cwd + "/autobaud",
+           cwd + "/bootloader",
+           cwd + "/crc",
+           cwd + "/drivers",
+           cwd + "/memory",
+           cwd + "/packet",
+           cwd + "/property",
+           cwd + "/include",
+           cwd + "/bm_usb",
+           cwd + "/startup",
+           cwd + "/utilities",
+           cwd + "/authentication"]
+
+if GetDepend(['SOC_IMXRTYYYY_SERIES']):
+    src.append('bootloader/src/lpuart_peripheral_interface.c')
+    src.append('bootloader/src/usb_hid_msc_peripheral_interface.c')
+    src.append('drivers/microseconds/src/microseconds_pit.c')
+    src.append('memory/src/flexspi_nor_memory.c')
+    src.append('memory/src/device_memory.c')
+    src.append('property/src/property_imx.c')
+    src.append('bm_usb/usb_descriptor.c')
+
+if GetDepend(['SOC_IMXRTXXX_SERIES']):
+    src.append('bootloader/src/flexcomm_usart_peripheral_interface.c')
+    src.append('bootloader/src/usb_dfu_hid_peripheral_interface.c')
+    src.append('crc/src/crc8.c')
+    src.append('drivers/microseconds/src/microseconds_sysclk.c')
+    src.append('memory/src/flexspi_nor_memory.c')
+    src.append('memory/src/sram_init_lpc.c')
+    src.append('property/src/property_lpc.c')
+    src.append('bm_usb/usb_device_descriptor.c')
+
+if GetDepend(['SOC_LPC_SERIES']):
+    src.append('api_tree/flash_c040hd/api_flash.c')
+    src.append('bootloader/src/flexcomm_usart_peripheral_interface.c')
+    src.append('bootloader/src/usb_fs_hs_hid_peripheral_interface.c')
+    src.append('crc/src/crc8.c')
+    src.append('drivers/microseconds/src/microseconds_sysclk.c')
+    src.append('memory/src/flash_c040hd_memory.c')
+    src.append('memory/src/flash_ffr_memory.c')
+    src.append('memory/src/sram_init_lpc.c')
+    src.append('property/src/property_lpc.c')
+    src.append('bm_usb/usb_device_descriptor.c')
+    src.append('authentication/bus_crypto_engine_hal.c')
+
+group = DefineGroup('mcuisp_src', src, depend = ['COMPONENT_MCU_ISP'], CPPPATH = CPPPATH)
+
+Return('group')

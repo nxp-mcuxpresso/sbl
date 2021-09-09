@@ -1,0 +1,6 @@
+-------------------------------------------------------------------------------------------------------------------------
+   USB(PD) Version  |                              Release                           |              Branch or Tag
+-------------------------------------------------------------------------------------------------------------------------
+      1.6.3          |  SDK 2.2 FRDM-KL27Z release based on SDK2.2 package           |   pd_rel1
+      1.6.3          |  SDK 2.2 Aruba release based on SDK2.2 package                |   pd_rel_aruba
+      1.7.0          |  SDK 2.2.1 Niobe2 release on KEX                              |   USB_SDK_2_0_RELEASE6_PD

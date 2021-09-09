@@ -1,0 +1,76 @@
+import os
+Import('sblprofile')
+from building import *
+
+cwd = GetCurrentDir()
+group = []
+
+src_utilitie = Split('''
+MIMXRT595S/utilities/fsl_assert.c
+MIMXRT595S/utilities/debug_console/fsl_debug_console.c
+MIMXRT595S/utilities/str/fsl_str.c
+''')
+path = [cwd + '/CMSIS/Include', cwd + '/MIMXRT595S/utilities']
+path += [cwd + '/MIMXRT595S/utilities/debug_console', cwd + '/MIMXRT595S/utilities/str']
+group = DefineGroup('utilitie', src_utilitie, depend = [''], CPPPATH = path)
+
+src_device = Split('''
+MIMXRT595S/system_MIMXRT595S_cm33.c
+''')
+if sblprofile.CROSS_TOOL == 'gcc':
+    src_device += ['MIMXRT595S/gcc/startup_MIMXRT595S_cm33.S']
+elif sblprofile.CROSS_TOOL == 'keil':
+    src_device += ['MIMXRT595S/arm/startup_MIMXRT595S_cm33.S']
+elif sblprofile.CROSS_TOOL == 'iar':
+    src_device += ['MIMXRT595S/iar/startup_MIMXRT595S_cm33.s']
+path = [cwd + '/CMSIS/Include',cwd + '/MIMXRT595S']
+group =group + DefineGroup('device', src_device, depend = [''], CPPPATH = path)
+
+src_drivers = Split('''
+MIMXRT595S/drivers/fsl_common.c
+MIMXRT595S/drivers/fsl_clock.c
+MIMXRT595S/drivers/fsl_cache.c
+MIMXRT595S/drivers/fsl_flexcomm.c
+MIMXRT595S/drivers/fsl_iap.c
+MIMXRT595S/drivers/fsl_power.c
+MIMXRT595S/drivers/fsl_reset.c
+MIMXRT595S/drivers/fsl_casper.c
+MIMXRT595S/drivers/fsl_hashcrypt.c
+MIMXRT595S/drivers/fsl_trng.c
+''')
+
+if GetDepend(['SOC_GPIO']):
+    src_drivers += ['MIMXRT595S/drivers/fsl_gpio.c']
+
+if GetDepend(['SOC_UART']):
+    src_drivers += ['MIMXRT595S/drivers/fsl_usart.c']
+
+if GetDepend(['SOC_I2C']):
+    src_drivers += ['MIMXRT595S/drivers/fsl_i2c.c']
+
+if GetDepend(['SOC_SPI']):
+    src_drivers += ['MIMXRT595S/drivers/fsl_spi.c']
+
+if GetDepend(['SOC_WDT']):
+    src_drivers += ['MIMXRT595S/drivers/fsl_wwdt.c']
+
+if GetDepend(['SOC_USB_HOST']) or GetDepend(['SOC_USB_DEVICE']):
+    src_drivers += ['MIMXRT595S/drivers/fsl_usdhc.c']
+
+if GetDepend(['SOC_FLEXSPI']):
+    src_drivers += ['MIMXRT595S/drivers/fsl_flexspi.c']
+
+if GetDepend(['SOC_CRC']):
+    src_drivers += ['MIMXRT595S/drivers/fsl_crc.c']
+
+if GetDepend(['SOC_INPUTMUX']):
+    src_drivers += ['MIMXRT595S/drivers/fsl_inputmux.c']
+
+if GetDepend(['SOC_PINT']):
+    src_drivers += ['MIMXRT595S/drivers/fsl_pint.c']
+
+    
+path = [cwd + '/CMSIS/Include', cwd + '/MIMXRT595S', cwd + '/MIMXRT595S/drivers']
+group =group + DefineGroup('driver', src_drivers, depend = [''], CPPPATH = path)
+
+Return('group')

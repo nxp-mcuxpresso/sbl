@@ -1,0 +1,66 @@
+/*!
+@addtogroup host_msc_example
+@{
+
+@defgroup host_msd_command Host MSD Command Example
+@{
+
+# Overview
+
+This Host MSD example supports the UFI and SCSI U-disk device. 
+@n The application prints the attached device information when the U-disk device is attached.
+The application executes UFI commands to test the attached device.
+
+# System Requirement
+
+## Hardware requirements
+
+- Mini/micro USB cable
+- USB A to micro AB cable
+- Hardware (Tower module/base board, and so on) for a specific device
+- Personal Computer (PC)
+
+
+## Software requirements
+
+- The project path is: 
+@n <MCUXpresso_SDK_Install>/boards/<board>/usb_examples/usb_host_msd_command/<rtos>/<toolchain>.
+@note The <rtos> is Bare Metal or FreeRTOS OS.
+
+.
+
+# Getting Started
+
+## Hardware Settings
+
+@note Set the hardware jumpers (Tower system/base module) to default settings.
+
+.
+
+## Prepare the example 
+
+1.  Download the program to the target board.
+2.  Power off the target board and power on again.
+3.  Connect devices to the board.
+
+@note For detailed instructions, see the appropriate board User's Guide.
+
+# Run the example
+
+1.  Connect the board UART to the PC and open the COM port in a terminal tool.
+2.  Plug in the hub or U-disk device to the board. The attached information prints out in the terminal.
+3.  The test information prints in the terminal, "success" prints when one command succeeds and "fail" prints when one command fails.
+    The test completes when there is a command fail or all the tests are done.
+@n The following figure is an example for attaching one U-disk device.
+@image html host_msd_command_output.jpg
+@image latex host_msd_command_output.jpg "Attach U-disk device"
+4.  To test throughput, set the MSD_THROUGHPUT_TEST_ENABLE to (1) in te file host_msd_command.h. 
+    An additional 64 K RAM is required to test the throughput. The macro is only supported on the TWR-K65F180M Tower System module and IAR.
+@n The following figure is a throughput test example for attaching one U-disk device.
+@image html host_msd_command_throughput_output.jpg
+@image latex host_msd_command_throughput_output.jpg "Throughput test"
+
+@note Throughput test only supports the TWR-K65F180M Tower System module.
+
+@}
+@} */

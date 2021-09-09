@@ -1,0 +1,21 @@
+Import('sblprofile')
+from building import *
+
+cwd = GetCurrentDir()
+
+# add the general drivers.
+src = Split("""
+bl_flexcomm_usart_irq_config_common.c
+clock_config_IMXRT500.c
+external_memory_property_map_IMXRT500.c
+hardware_init_IMXRT500.c
+memory_map_IMXRT500.c
+peripherals_IMXRT500.c
+pinmux_utility_imxrt500.c
+""")
+
+CPPPATH = [cwd]
+    
+group = DefineGroup('mcuisp_bsp', src, depend = ['COMPONENT_MCU_ISP'], CPPPATH = CPPPATH)
+
+Return('group')

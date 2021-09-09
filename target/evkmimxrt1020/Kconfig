@@ -1,0 +1,127 @@
+mainmenu "MCU-SBL RT1020 Configuration"
+
+config SBL_DIR
+    string
+    option env="SBL_ROOT"
+    default "../../"
+
+config SOC_IMXRT1020_SERIES
+    bool
+    select ARCH_ARM_CORTEX_M7
+    select ARCH_ARM_CORTEX_FPU
+	select SOC_IMXRTYYYY_SERIES
+
+config ARCH_ARM_CORTEX_M7
+    bool
+
+config ARCH_ARM_CORTEX_FPU
+    bool
+
+config SOC_IMXRTYYYY_SERIES
+    bool
+
+config COMPONENT_MCU_ISP
+    bool
+    select SOC_GPIO
+
+source "$SBL_DIR/Kconfig"
+menu "Platform Drivers Config"
+
+config BOARD_FLASH_SUPPORT
+    bool "Board flash support"
+    default y
+    help
+        Select the flash board used.
+
+if BOARD_FLASH_SUPPORT
+    choice
+        prompt "Select the flash"
+        default ISSI_IS25LPxxxA
+
+        config ISSI_AT25SFxxxA
+            bool "ISSI_AT25SFxxxA Flash"
+            select SOC_FLEXSPI
+            select SOC_FLEXSPI_1
+
+        config ISSI_IS25LPxxxA
+            bool "ISSI_IS25LPxxxA Flash"
+            select SOC_FLEXSPI
+            select SOC_FLEXSPI_1
+			
+        config Cypress_S26KSxxxS
+            bool "Cypress_S26KSxxxS Flash"
+            select SOC_FLEXSPI
+            select SOC_FLEXSPI_1
+
+        config ISSI_IS25WPxxxA
+            bool "ISSI_IS25WPxxxA Flash"
+            select SOC_FLEXSPI
+            select SOC_FLEXSPI_1
+
+        config WINBOND_W25QxxxJV
+            bool "WINBOND_W25QxxxJV Flash"
+            select SOC_FLEXSPI
+            select SOC_FLEXSPI_1
+
+        config Macronix_MX25UM51345G
+            bool "Macronix_MX25UM51345G Flash"
+            select SOC_FLEXSPI
+            select SOC_FLEXSPI_1
+
+        config Macronix_MX25UM51345G_2nd
+            bool "Macronix_MX25UM51345G_2nd Flash"
+            select SOC_FLEXSPI
+            select SOC_FLEXSPI_1
+
+    endchoice
+endif
+
+config SOC_MIMXRT1021DAG5A
+    bool
+    select SOC_IMXRT1020_SERIES
+    default y
+
+menu "On-chip Peripheral Drivers"
+
+    config SOC_GPIO
+        bool "Enable GPIO"
+        default n
+
+    menuconfig SOC_LPUART
+        bool "Enable UART"
+        default y
+        if SOC_LPUART
+            config SOC_LPUART_1
+                bool "Enable LPUART1"
+                default y
+            config SOC_LPUART_2
+                bool "Enable LPUART2"
+                default n
+        endif
+
+    config SOC_FLEXSPI
+        bool "Enable FlexSPI"
+        default n
+        if SOC_FLEXSPI
+            config SOC_FLEXSPI_1
+                bool "Enable FlexSPI1"
+                default y
+            config SOC_FLEXSPI_2
+                bool "Enable FlexSPI2"
+                default n
+	endif
+endmenu
+
+menu "Onboard Peripheral Drivers"
+
+    config BOARD_SDRAM
+        bool "Enable SDRAM"
+        default n
+
+endmenu
+
+menu "Board extended module Drivers"
+
+endmenu
+
+endmenu

@@ -1,0 +1,70 @@
+/*!
+@addtogroup host_msc_example
+@{
+
+@defgroup host_msd_fatfs Host MSD FATFS example
+@{
+
+# Overview
+
+This Host FatFs example supports UFI and SCSI U-disk device. 
+@n The application prints the attached device information when U-disk device is attached.
+The application executes some FatFs APIs to test the attached device.
+
+# System Requirement
+
+## Hardware requirements
+
+- Mini/micro USB cable
+- USB A to micro AB cable
+- Hardware (Tower module/base board, and so on) for a specific device
+- Personal Computer (PC)
+
+
+## Software requirements
+
+- The project path is: 
+@n <MCUXpresso_SDK_Install>/boards/<board>/usb_examples/usb_host_msd_fatfs/<rtos>/<toolchain>.
+@note The <rtos> is Bare Metal or FreeRTOS OS.
+
+.
+
+# Getting Started
+
+## Hardware Settings
+
+@note Set the hardware jumpers (Tower system/base module) to default settings.
+
+.
+
+## Prepare the example 
+
+1.  Download the program to the target board.
+2.  Power off the target board and power on again.
+3.  Connect devices to the board.
+
+@note For detailed instructions, see the appropriate board User's Guide.
+
+# Run the example
+
+1.  Connect the board UART to the PC and open the COM port in a terminal tool.
+2.  Plug in a HUB or a U-disk device to the board. The attached information prints out in the terminal.
+3.  The test information prints in the terminal. The "success" message prints when a FatFs API succeeds. The "fail" message prints when a FatFs API fails.
+    The test completes when either the FatFs API fails or all the tests are done.
+@n The following figure is an example for attaching one U-disk device.
+@image html host_msd_fatfs_output.jpg
+@image latex host_msd_fatfs_output.jpg "Attach U-disk device"
+4.  To test the throughput, set the MSD_FATFS_THROUGHPUT_TEST_ENABLE to (1) in the file host_msd_fatfs.h. 
+    An additional 64 K RAM is required to test the throughput. The macro is only supported on TWR-K65F180M Tower System module and IAR IDE.
+    @n The throughput test process is as follows:
+    - Enable MSD_FATFS_THROUGHPUT_TEST_ENABLE.
+    - Format the U-disk in the PC. Select the "Allocation unit size" 32 K.
+    - Insert the U-disk. The throughput test starts.
+@n The following image shows an example.
+@image html host_msd_fatfs_throughput_output.jpg
+@image latex host_msd_fatfs_throughput_output.jpg "Throughput test"
+
+@note The throughput test only supports the TWR-K65F180M Tower System module.
+
+@}
+@} */

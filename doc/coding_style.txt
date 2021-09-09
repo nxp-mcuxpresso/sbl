@@ -1,0 +1,35 @@
+                           SBL Coding Style
+
+1. Directory Naming
+        - lower-case
+        - descriptive name
+
+2. File Naming
+        - lower-case for new
+        - original name for referenced
+        - descriptive name
+
+3. Header File
+        - Once-Only including guard like:
+
+          #ifndef __FILE_H__
+          #define __FILE_H__
+          /* header file content */
+          #endif
+
+        - begin and end with "__", connect with "_".
+
+        - copyright information and change log
+
+4. Astyle parameters to format the code
+        --style=allman
+        --indent=spaces=4
+        --indent-preproc-block
+        --pad-oper
+        --pad-header
+        --unpad-paren
+        --suffix=none
+        --align-pointer=name
+        --lineend=linux
+        --convert-tabs
+        --verbose

@@ -1,0 +1,61 @@
+/*!
+@addtogroup host_phdc_example
+@{
+
+@defgroup host_phdc_manager Host PHDC Manager Example
+@{
+
+# Overview
+
+The Host PHDC Manager Example is a simple demonstration program based on the MCUXpresso SDK.
+@n The application supports the USB weight scale device. It prints out the body mass and body mass index information when the USB weight scale device is attached.
+
+# System Requirement
+
+## Hardware requirements
+
+- Mini/micro USB cable
+- USB A to micro AB cable
+- Hardware (Tower module/base board, and so on) for a specific device
+- Personal Computer
+
+
+## Software requirements
+
+- The project files are in: 
+@n <MCUXpresso_SDK_Install>/boards/<board>/usb_examples/usb_host_phdc_manager/<rtos>/<toolchain>.
+@note The <rtos> is Bare Metal or FreeRTOS OS.
+- Terminal tool.
+
+
+# Getting Started
+
+## Hardware Settings
+
+For detailed instructions, see the appropriate board User's Guide.
+@note Set the hardware jumpers (Tower system/base module) to default settings.
+
+.
+
+## Prepare the example
+
+1.  Download the program to the target board.
+2.  Power off the target board and power on again.
+3.  Connect a USB weight scale device to the board.
+@note this example could be tested with the "usb_device_phdc_manager" example in pairs.
+# Run the example
+
+1.  Connect the board UART to the PC and open the COM port in a terminal tool.
+2.  Plug in a hub or the USB weight scale device to the board that is running the PHDC manager example.
+    The attached information prints out in the terminal.
+3.  The weight scale data (body mass and body mass index) is automatically sent to the host. The scan
+    report number, time, value, and unit of each field is shown in terminal tool.
+
+The following figure is an example for attaching one USB weight scale device.
+
+@image html host_phdc_weighscale_output.jpg
+@image latex host_phdc_weighscale_output.jpg "Attach USB weight scale device"
+
+
+@}
+@} */

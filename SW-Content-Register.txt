@@ -1,0 +1,158 @@
+Release Name: SBL
+Release Version: 1.0
+Package License: BSD 3-Clause "New" or "Revised" License
+
+SDK_Peripheral_Driver      Name: SDK Peripheral Driver                       
+                           Version: 2.x.x                                    
+                           Outgoing License: BSD-3-Clause
+                           Format: source code                               
+                           Description: Peripheral drivers are designed for  
+                           the most common use cases identified for the      
+                           underlying hardware block.                        
+                           Location: target/<target_name>/device/<device>/drivers                
+                           Origin: NXP (BSD-3-Clause)
+
+SBL_Examples               Name: SBL examples
+                           Version: NA
+                           Outgoing License: BSD-3-Clause
+                           Format: source code, linker files
+                           Description: SBL examples to show how  
+                           to perform ota on different targets.                        
+                           Location: target/<target_name>/board/
+                                     target/<target_name>/src/						   
+                           Origin: NXP (BSD-3-Clause)
+		   
+SDK_Device                 Name: SDK SoC files                               
+                           Version: NA                                       
+                           Outgoing License: BSD-3-Clause
+                           Format: source code, linker files                 
+                           Description: Device system files, template files, 
+                           IDE related startup and linker files.             
+                           Location: target/<target_name>/device/<device>/                       
+                           Origin: NXP (BSD-3-Clause)                        
+
+cmsis                      Name: CMSIS                                       
+                           Version: 5.6.0                                    
+                           Outgoing License: Apache License 2.0              
+                           License File: target/<target_name>/device/CMSIS/LICENSE.txt
+                           Format: source code                               
+                           Description: Vendor-independent hardware          
+                           abstraction layer for microcontrollers that are   
+                           based on Arm® Cortex® processors, distributed by  
+                           ARM. cores                                        
+                           Location: target/<target_name>/device/CMSIS/                                  
+                           Origin: ARM (Apache-2.0) -                        
+                           https://github.com/ARM-software/CMSIS_5/releases/t
+                           ag/5.6.0
+						   
+cmsis_drivers              Name: SDK CMSIS Peripheral Drivers                
+                           Version: 2.x.x                                    
+                           Outgoing License: Apache License 2.0              
+                           License File: target/<target_name>/device/CMSIS/LICENSE.txt
+                           Format: source code                               
+                           Description: CMSIS Peripheral drivers are designed
+                           to provide hardware independent APIs which make   
+                           application reusable across a wide range of       
+                           supported microcontroller devices.                
+                           Location: target/<target_name>/device/<device>/cmsis_drivers          
+                           Origin: NXP (Apache License 2.0)
+						   
+SDK_Components             Name: SDK components and board peripheral drivers 
+                           Version: NA                                       
+                           Outgoing License: BSD-3-Clause
+                           Format: source code                               
+                           Description: SDK components and board peripheral  
+                           drivers, for example, flaship and uart drivers.    
+                           Location: component/                             
+                           Origin: NXP (BSD-3-Clause)
+						   
+mbedtls                    Name: Mbed TLS                                    
+                           Version: 2.16.6                                   
+                           Outgoing License: Apache-2.0                      
+                           License File: component/secure/mbedtls/apache-2.0.txt   
+                           Format: source code                               
+                           Description: Cryptographic and SSL/TLS Library    
+                           Location: component/secure/mbedtls                    
+                           Origin: ARM(Apache-2.0) -                         
+                           https://github.com/ARMmbed/mbedtls/releases/tag/mb
+                           edtls-2.16.6 
+						   
+boot                       Name: boot                                      
+                           Version: NA                                    
+                           Outgoing License: Apache License 2.0
+                           Format: source code
+                           Location: boot/                                  
+                           Origin: Linaro Limited(Apache-2.0)
+                           Url: https://github.com/mcu-tools/mcuboot
+
+scons scripts              Name: Sconscript, Sconstruct, sblprofile.py
+                           Version: NA
+                           Outgoing License: Apache License 2.0
+                           Format: Scons framework scripts, not source code
+                           Description: Files which organize source code structure
+                           and control the compilation of the platform.
+                           Location: target/<target_name>/
+                           Origin: RT-Thread Development Team(Apache-2.0)
+                           Url: https://github.com/RT-Thread/rt-thread
+
+python script              Name: python script files
+                           Version: NA
+                           Outgoing License: GNU General Public License
+                           Format: Python script files, not source code
+                           Description: Python script files used for project
+                           configuration.
+                           Location: tools/*.py
+                           Origin: RT-Thread Development Team(Apache-2.0)
+                           Url: https://github.com/RT-Thread/rt-thread/tree/m
+                           aster/tools
+
+kconfig-frontends          Name: kconfig frontends
+                           Version: NA
+                           Outgoing License: Apache License 2.0
+                           Format: source code, scripts
+                           Description: Kconfig frontends and parser
+                           Location: tools/kconfig-frontends
+                           Origin: RT-Thread Development Team(Apache-2.0)
+                           Url: https://github.com/RT-Thread/rt-thread/tree/m
+                           aster/tools/kconfig-frontends
+
+ConEmu                     Name: ConEmu
+                           Version: NA
+                           Outgoing License: BSD-3-Clause
+                           Format: executable file, script file
+                           Description: ConEmu starts a console program in hidden
+                           console window and provides an alternative customizable
+                           GUI window with various features.
+                           Location: tools/env/ConEmu
+                           Origin: Maximus5(BSD-3-Clause)
+                           Url: https://github.com/Maximus5/ConEmu
+
+python376                  Name: python376
+                           Version: 3.7.6
+                           Outgoing License: python software foundation license 2.0
+                           License File: tools/env/python376/LICENSE.txt
+                           Format: executable file, script file, source code
+                           Description: Python source code
+                           Location: tools/env/python376
+                           Origin: Python Software Foundation(PSF-2.0)
+                           Url: https://github.com/python/cpython
+
+python376_32               Name: python376_32
+                           Version: 3.7.6
+                           Outgoing License: python software foundation license 2.0
+                           License File: tools/env/python376_32/LICENSE.txt
+                           Format: executable file, script file, source code
+                           Description: Python source code
+                           Location: tools/env/python376_32
+                           Origin: Python Software Foundation(PSF-2.0)
+                           Url: https://github.com/python/cpython
+
+env scripts                Name: env scripts
+                           Version: NA
+                           Outgoing License: GNU General Public License v2.0
+                           License File: tools/env/scripts/LICENSE
+                           Format: script file
+                           Description: Python Scripts for ENV usage
+                           Location: tools/env/scripts
+                           Origin: RT-Thread Development Team(GPL-2.0)
+                           Url: https://github.com/RT-Thread/env

@@ -1,0 +1,21 @@
+-------------------------------------------------------------------------------------------------------------------------
+    USB Version      |                              Release                           |              Branch or Tag
+-------------------------------------------------------------------------------------------------------------------------
+      1.0.0          |  SDK 2.0 REL1                                                  |   USB_SDK_2_0_RELEASE
+      1.0.1          |  L5K Standalone Release                                        |   release/rel_sdk_kl28z_2.0.0_ga
+      1.1.0          |  SDK 2.0 REL2                                                  |   USB_SDK_2_0_RELEASE2
+      1.2.0          |  Niobe2 Standalone Release                                     |   NPI_Niobe2_ER_RELEASE
+      1.3.0          |  Customer Support(suspend/resume) on frdm-kl43z                |   NPI_FRDM_KL43Z_ER_RELEASE
+      1.3.1          |  Customer Support(printer host/device class) on frdm-f22       |   TAG_FRDMK22F_PRINTER_PATCH_RELEASE in master branch
+      1.4.0          |  SDK 2.0 REL5                                                  |   USB_SDK_2_0_RELEASE5
+      1.4.1          |  Customer Support(cdc rndis device) on frdm-f66                |   NPI_FRDMK66F_VNIC_PATCH_RELEASE
+      1.5.0          |  Aruba Standalone Release                                      |   NPI_ARUBA_RELEASE
+      1.6.0          |  FRDM-K28F Standalone Release                                  |   NPI_K28F_RELEASE 
+      1.6.1          |  imx6ul/imx6ull Standalone Release                             |   USB_IMX_6UL 
+      1.6.2          |  Ultra Standalone Release                                      |   master
+      1.6.3          |  SDK 2.0 REL6                                                  |   USB_SDK_2_0_RELEASE6
+      1.7.0          |  PD STACK release for NIOBE2                                   |   REL_PD_NIOBE2
+      1.8.0          |  SDK 2.0 REL7                                                  |   USB_SDK_2_0_RELEASE7
+      1.8.1          |  ARUBA_FLASHLESS RELEASE                                       |   NPI_ARUBA_FLASHLESS_RELEASE
+      1.8.2          |  lpcxpresso51u68 Standalone Release                            |   NPI_LPC51U68_RELEASE
+      1.9.0          |  ARUBA_FLASHLESS RELEASE                                       |   NPI_ARUBA_FLASHLESS_RELEASE

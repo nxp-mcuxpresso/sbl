@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<workspace>
+  <project>
+    <path>$WS_DIR$\pin_detect_hid_mouse_bm.ewp</path>
+  </project>
+  <project>
+    <path>$WS_DIR$\..\..\..\..\..\lib\ksdk_platform_lib\iar\K65F18\ksdk_platform_lib.ewp</path>
+  </project>
+  <batchBuild>
+    <batchDefinition>
+      <name>all</name>
+      <member>
+        <project>usbh_sdk_bm_lib</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>ksdk_platform_lib</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>pin_detect_hid_mouse_bm</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>usbh_sdk_bm_lib</project>
+        <configuration>Release</configuration>
+      </member>
+      <member>
+        <project>ksdk_platform_lib</project>
+        <configuration>Release</configuration>
+      </member>
+      <member>
+        <project>pin_detect_hid_mouse_bm</project>
+        <configuration>Release</configuration>
+      </member>
+    </batchDefinition>
+    <batchDefinition>
+      <name>Debug</name>
+      <member>
+        <project>usbh_sdk_bm_lib</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>ksdk_platform_lib</project>
+        <configuration>Debug</configuration>
+      </member>
+      <member>
+        <project>pin_detect_hid_mouse_bm</project>
+        <configuration>Debug</configuration>
+      </member>
+    </batchDefinition>
+    <batchDefinition>
+      <name>Release</name>
+      <member>
+        <project>usbh_sdk_bm_lib</project>
+        <configuration>Release</configuration>
+      </member>
+      <member>
+        <project>ksdk_platform_lib</project>
+        <configuration>Release</configuration>
+      </member>
+      <member>
+        <project>pin_detect_hid_mouse_bm</project>
+        <configuration>Release</configuration>
+      </member>
+    </batchDefinition>
+  </batchBuild>
+</workspace>
+
+

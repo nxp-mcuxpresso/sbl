@@ -1,0 +1,63 @@
+
+# The source block assign file name to identifiers
+sources {
+ myBinFile = extern (0);
+}
+
+constants {
+    kAbsAddr_Start= 0x60000000;
+    kAbsAddr_Ivt = 0x60001000;
+    kAbsAddr_App = 0x60002000;
+}
+
+
+# The section block specifies the sequence of boot commands to be written to the SB file
+section (0) {
+
+    #1. Prepare Flash option
+    # In this example, the 0xc0233007 represents:
+    #     HyperFLASH 1V8, Query pads: 8 pads, Cmd pads: 8 pads, Frequency: 133MHz
+    load 0xc0233007 > 0x2000;
+    # Configure HyperFLASH using option a address 0x2000
+    enable flexspinor 0x2000;
+    
+    #2 Erase flash as needed.
+    erase 0x60000000..0x60020000;
+    
+    #3 Prepare PRDB options
+    # 0xe0120000 is an option for PRDB contruction and image encryption
+    # bit[31:28] tag, fixed to 0x0E
+    # bit[27:24] Key source, fixed to 0 for A0 silicon
+    # bit[23:20] AES mode: 1 - CTR mode
+    # bit[19:16] Encrypted region count
+    # bit[15:00] reserved in A0
+    load 0xe0120000 > 0x4000;
+    # Region 0 start
+    load 0x60001000 > 0x4004;
+    # Region 0 length
+    load 0x00001000 > 0x4008;
+    # Region 1 start
+    load 0x60002000 > 0x400c;
+    # Region 1 length
+    load 0x0000e000 > 0x4010;
+    # Program PRDB0 based on option
+    enable flexspinor 0x4000;
+
+    #4. Program config block
+    # 0xf000000f is the tag to notify Flashloader to program FlexSPI NOR config block to the start of device
+    load 0xf000000f > 0x3000;
+    # Notify Flashloader to response the option at address 0x3000
+    enable flexspinor 0x3000;
+
+    #5. Program image
+    load myBinFile > kAbsAddr_Ivt;
+
+    #6. Program BEE_KEY0_SEL and BEE_KEY1_SEL, enable SW_GP2 as BEE key
+    # load fuse 0x0000f000 > 0x06;
+
+    #7. Program SW_GP2
+    # load fuse 0xccddeeff >0x29;
+    # load fuse 0x8899aabb >0x2a;
+    # load fuse 0x44556677 >0x2b;
+    # load fuse 0x00112233 >0x2c;
+}

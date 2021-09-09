@@ -1,0 +1,64 @@
+/*!
+@addtogroup host_hid_example
+@{
+
+@defgroup host_hid_generic Host HID Generic Example
+@{
+
+# Overview
+
+This Host HID example only supports the HID generic device that runs the device HID generic example. 
+@n This application implements a simple HID interrupt in-and-out endpoint bi-directional communication.
+The application sends one test string to the device. The device receives and sends back the string. The application receives the string and prints it.
+
+# System Requirement
+
+## Hardware requirements
+
+- Mini/micro USB cable
+- USB A to micro AB cable
+- Hardware (Tower module/base board, and so on) for a specific device
+- Personal Computer (PC)
+
+
+## Software requirements
+
+- The project path is: 
+@n <MCUXpresso_SDK_Install>/boards/<board>/usb_examples/usb_host_hid_generic/<rtos>/<toolchain>.
+@note The <rtos> is Bare Metal or FreeRTOS OS.
+
+.
+
+# Getting Started
+
+## Hardware Settings
+
+@note Set the hardware jumpers (Tower system/base module) to default settings.
+
+.
+
+## Prepare the example 
+
+1.  Download the program to the target board.
+2.  Power off the target board and power on again.
+3.  Connect devices to the board.
+
+@note For detailed instructions, see the appropriate board User's Guide.
+@note this example could be tested with the "usb_device_hid_generic" example in pairs.
+
+# Run the example
+
+1.  Connect the board UART to the PC and open the COM port in a terminal tool.
+2.  Plug in the HUB or HID generic device to the board. The attached information prints out in the terminal.
+3.  The following string prints in the terminal.
+@n  Test string: This is a USB host HID generic demo. It only supports pid=0x00a2 and vid=0x1fc9 HID device. 
+The host sends this test string to the device. The device echoes the data to the host and the host prints the data.
+
+The following figure is an example for attaching one HID generic device.
+
+@image html host_hid_generic_output.jpg
+@image latex host_hid_generic_output.jpg "Attach HID generic device"
+
+
+@}
+@} */

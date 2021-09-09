@@ -1,0 +1,168 @@
+/*!
+@defgroup usb_example USB Examples
+@{
+*/
+
+/*!
+@defgroup device_example USB Device Examples
+@{
+@ingroup usb_example
+*/
+
+/*!
+@defgroup device_cdc_example DFU
+@ingroup device_example
+
+*/
+
+/*!
+@defgroup device_dfu_example CDC
+@ingroup device_example
+
+*/
+/*!
+@defgroup device_hid_example HID
+@ingroup device_example
+
+*/
+
+/*!
+@defgroup device_msc_example MSC
+@ingroup device_example
+
+*/
+
+/*!
+@defgroup device_audio_example AUDIO
+@ingroup device_example
+
+*/
+
+/*!
+@defgroup device_phdc_example PHDC
+@ingroup device_example
+
+*/
+
+/*!
+@defgroup device_video_example VIDEO
+@ingroup device_example
+
+*/
+
+/*!
+@defgroup device_ccid_example CCID
+@ingroup device_example
+
+*/
+
+/*!
+@defgroup device_composite_example COMPOSITE
+@ingroup device_example
+
+*/
+
+/*!
+@defgroup device_printer_example PRINTER
+@ingroup device_example
+
+*/
+
+/*!
+@defgroup device_suspend_resume_example SUSPEND_RESUME
+@ingroup device_example
+
+*/
+
+/*!
+@defgroup device_lpm_example LPM
+@ingroup device_example
+
+*/
+/*! @} */
+
+/*!
+@defgroup host_example USB Host Examples
+@{
+@ingroup usb_example
+*/
+
+/*!
+@defgroup host_cdc_example CDC
+@ingroup host_example
+
+*/
+
+/*!
+@defgroup host_hid_example HID
+@ingroup host_example
+
+*/
+
+/*!
+@defgroup host_msc_example MSC
+@ingroup host_example
+
+*/
+
+/*!
+@defgroup host_audio_example AUDIO
+@ingroup host_example
+
+*/
+
+/*!
+@defgroup host_phdc_example PHDC
+@ingroup host_example
+
+*/
+
+/*!
+@defgroup host_printer_example PRINTER
+@ingroup host_example
+
+*/
+
+/*!
+@defgroup host_suspend_resume_example SUSPEND_RESUME
+@ingroup host_example
+
+*/
+
+/*!
+@defgroup host_lpm_example LPM
+@ingroup host_example
+
+*/
+/*! @} */
+
+/*!
+@defgroup keyboard2mouse_example USB Keyboard2mouse Example
+@{
+@ingroup usb_example
+*/
+
+/*! @} */
+
+/*!
+@defgroup pin_detect_example USB PIN DETECT Example
+@{
+@ingroup usb_example
+*/
+
+/*!
+@defgroup pin_detect_hid_example HID
+@ingroup pin_detect_example
+
+*/
+
+/*! @} */
+
+/*!
+@defgroup otg_hid_example USB OTG HID Example
+@{
+@ingroup usb_example
+*/
+
+/*! @} */
+/*! @} */

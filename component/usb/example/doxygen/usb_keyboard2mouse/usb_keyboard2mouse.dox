@@ -1,0 +1,62 @@
+/*!
+@addtogroup keyboard2mouse_example
+@{
+
+@defgroup keyboard2mouse Keyboard to Mouse Example
+@{
+
+# Overview
+
+This example implements the host and the device, where the one controller works as a host and the other controller works as a device.
+@n The host supports the keyboard device and device works as a mouse when connecting to the PC.
+
+# System Requirement
+
+## Hardware requirements
+
+- Mini/micro USB cable
+- USB A to micro AB cable
+- Hardware (Tower module/base board, and so on) for a specific device
+- Personal Computer(PC)
+
+
+## Software requirements
+
+- The project path is: 
+@n <MCUXpresso_SDK_Install>/boards/<board>/usb_examples/usb_keyboard2mouse/<rtos>/<toolchain>.
+@note The <rtos> is Bare Metal or FreeRTOS OS.
+
+.
+
+# Getting Started
+
+## Hardware Settings
+
+@note First, set the hardware jumpers (Tower system/base module) to default settings.
+
+.
+
+## Prepare the example 
+
+1.  Download the program to the target board.
+2.  Power off the target board and power on again.
+3.  Connect devices to the board and connect a USB cable between the PC and the USB device port of the board.
+
+@note For detailed instructions, see the appropriate board User's Guide.
+@note Host hid example doesn't support HID report descriptor analysis, this example assume that the device data are sent by specific order. 
+      @n For more detail, please refer to the code. For the device list we tested,
+      @n please refer to chapter "Peripheral devices tested with the USB Host stack" in "SDK Release Notes xxxx(board name)".
+
+# Run the example
+
+1.  Connect the board UART to the PC and open the COM port in a terminal tool.
+2.  Plug in a hub or a keyboard device to the full-speed only port. The attached information prints out in the terminal.
+3.  Plug in the device high-speed port into the PC. An HID-compliant mouse is enumerated in the Device Manager.
+4.  Press <w, s, a, d> in the keyboard, which causes the mouse to move.
+    - Press 'w', the mouse move up.
+    - Press 's', the mouse move down.
+    - Press 'a', the mouse move left.
+    - Press 'd', the mouse move right.
+
+@}
+@} */

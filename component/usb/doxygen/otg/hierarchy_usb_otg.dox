@@ -1,0 +1,30 @@
+/*!
+@defgroup usb_otg_drv USB OTG driver
+@{
+*/
+
+/*!
+@defgroup usb_otg_controller_driver USB OTG Controller driver
+@ingroup usb_otg_drv
+*/
+
+/*!
+@defgroup usb_otg_peripheral_driver USB OTG Peripheral driver
+@ingroup usb_otg_drv
+*/
+
+/*! @} */
+
+/*!
+@defgroup usb_os_abstraction USB OS Adapter
+@details The OS adapter (OSA) is used to wrap the differences between RTOSes and make the USB stack with the same code base and behavior. 
+@note OSA should not be used in the USB application. Therefore, from the USB application viewpoint, OSA is invisible.
+*/
+
+/*!
+@defgroup usb_drv Definitions and structures 
+@details This lists the common definitions and structures for USB stack.
+@{
+*/
+
+/*! @} */

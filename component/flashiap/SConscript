@@ -1,0 +1,13 @@
+from building import *
+
+cwd = GetCurrentDir()
+CPPPATH = [cwd]
+
+if GetDepend(['SOC_LPC_SERIES']):
+    src = ['flash_api.c']
+else:
+    src = Glob('*.c')
+
+group = DefineGroup('flashiap', src, depend = [], CPPPATH = CPPPATH)
+
+Return('group')

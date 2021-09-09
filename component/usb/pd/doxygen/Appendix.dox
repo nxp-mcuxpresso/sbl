@@ -1,0 +1,112 @@
+/*!
+@addtogroup appendix_a
+@details This section introduce few typical use cases.
+@n In these cases, the source's capabilities are: 5V/2A, 12V/2A and 20V/1A, sink's expected power is 12V/1A.
+# Case1 Request expected power in connection.
+  @n The event and API callback flow is as follow:
+  @image html case_connect_request.jpg
+  @image latex case_connect_request.jpg "request power in connection"
+  - Source
+    - Step1, send the source_capabilities (two PDOs: 5V2A and 12V/2A).
+    - Step2, source receive the request, the request power is 12V/1A source will return accept for the request.
+    - Step3, source call the power API to turn on the requested power.
+    - Step4, this event tell application the result.
+  - Sink
+    - Step1, sink receive partner's source_capabilities, pass the capabilities to applicaion.
+    - Step2, sink get the requested RDO, application parse the source capabilities and return the RDO (12V/1A).
+    - Step3, sink can draw the requested 12V/1A power.
+    - Step4, this event tell application the result.
+
+# Case2 Request high voltage after connection.
+  @n After case1, sink request 20V/1A in this case.
+  @n The event and API callback flow is as follow:
+  @image html case_request_20V.jpg
+  @image latex case_request_20V.jpg "request power in connection"
+  - Source
+    - Step1, source receive the request, the request power is 20V/1A source will return accept for the request.
+    - Step2, source call the power API to turn on the requested power.
+    - Step3, this event tell application the result.
+  - Sink
+    - Step1, sink application call the PD_Command(PD_DPM_CONTROL_REQUEST, 20V RDO) to trigger the request flow.
+      This API is asynchronous will return immediately.
+    - Step2, sink can draw the requested 20V/1A power.
+    - Step3, this event tell application the result.
+
+# Case3 Request power role swap.
+  @n Assume source's external power is removed and it request power role swap.
+  @n The event and API callback flow is as follow:
+  @image html case_pr_swap.jpg
+  @image latex case_pr_swap.jpg "request power in connection"
+  - Source
+    - Step1, source application call the PD_Command(PD_DPM_CONTROL_PR_SWAP) to trigger the swap request flow.
+    - Step2, source call the power API to turn off Vbus power supply.
+    - Step3, source can draw Type-C default Vbus.
+    - Step3, this event tell application the result.
+  - Sink
+    - Step1, sink receive the request, sink will return accept for the request.
+    - Step2, sink call the power API to stop draw Vbus power.
+    - Step3, sink call the power API to turn on the Type-C default Vbus power.
+    - Step4, this event tell application the result.
+
+@addtogroup appendix_b
+@details This section introduce the PD stack functions configure MACROs that are defined in the usb_pd_config.h, application need provide this file.
+@n Note: 
+   - The configure MACROs are used to configure whether one function is supported or not.
+     For example: if extended message is not supported, PD_CONFIG_EXTENDED_MSG_SUPPORT should be set as (0) to decrease code size.
+   - Even if the MACRO is set as (1), it only mean the stack has this function, doesn't mean the stack will do this function.
+     For example: PD_CONFIG_TRY_SRC_SUPPORT is set as (1), it doesn't mean PD stack will do Try.SRC, user need do Try.SRC through the #pd_instance_config_t.
+
+@n The MACROs are as follow:
+- PD_CONFIG_PTN5110_PORT
+  @n PD PTN5110 PHY driver instance count, meantime it indicates PTN5110 PHY driver enable or disable.
+     - if 0, PTN5110 driver is disable.
+     - if greater than 0, PTN5110 driver is enable.
+- PD_CONFIG_CMSIS_I2C_INTERFACE
+  @n Enable CMSIS I2C driver
+- PD_CONFIG_CMSIS_SPI_INTERFACE
+  @n Enable CMSIS SPI driver.
+- PD_CONFIG_SOURCE_ROLE_ENABLE
+  @n Enable PD stack source role function.
+- PD_CONFIG_SINK_ROLE_ENABLE
+  @n Enable PD stack sink role function.
+- PD_CONFIG_DUAL_POWER_ROLE_ENABLE
+  @n Enable PD stack dual power role function.
+- PD_CONFIG_DUAL_DATA_ROLE_ENABLE
+  @n Enable PD stack dual data role function.
+- PD_CONFIG_VCONN_SUPPORT
+  @n Enable Vconn support (vconn_swap, vconn supply).
+- USBPD_ENABLE_VCONN_DISCHARGE
+  @n Enable Vconn discharge function.
+- PD_CONFIG_VENDOR_DEFINED_MESSAGE_ENABLE
+  @n Enable vendor defined message function.
+- PD_CONFIG_ALTERNATE_MODE_SUPPORT.
+  @n Enable alternate mode function.
+- PD_CONFIG_SRC_AUTO_DISCOVER_CABLE_PLUG
+  @n Enable auto discovery cable plug function when connection.
+- PD_CONFIG_CABLE_COMMUNICATION_ENABLE
+  @n Enable cable communication function.
+- PD_CONFIG_SINK_DETACH_DETECT_WAY
+  @n Config the detach detect way
+     - PD_SINK_DETACH_ON_VBUS_ABSENT: detach is detected when vubs absent.
+     - PD_SINK_DETACH_ON_CC_OPEN: detach is detected when CC is open.
+- PD_CONFIG_EXTENDED_MSG_SUPPORT
+  @n Enable PD3.0 extended message function.
+- PD_CONFIG_PD3_FAST_ROLE_SWAP_ENABLE
+  @n Enable fast role swap function.
+- PD_CONFIG_PD3_AMS_COLLISION_AVOID_ENABLE
+  @n Enable PD3.0 AMS collision avoid function.
+- PD_CONFIG_MIN_DISCHARGE_TIME_ENABLE
+  @n Set the discharge time.
+     - 1: use the 14ms.
+     - 0: use the 650ms.
+- PD_CONFIG_TRY_SNK_SUPPORT
+  @n Enable Try.SNK function.
+- PD_CONFIG_TRY_SRC_SUPPORT
+  @n Enable Try.SRC function.
+- PD_CONFIG_SINK_ACCESSORY_SUPPORT
+  @n Enable sink accessory function.
+- PD_CONFIG_AUDIO_ACCESSORY_SUPPORT
+  @n Enable audio accessory function.
+- PD_CONFIG_DEBUG_ACCESSORY_SUPPORT
+  @n Enable debug accessory function.
+*/

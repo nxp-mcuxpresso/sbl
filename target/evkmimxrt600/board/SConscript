@@ -1,0 +1,50 @@
+Import('sblprofile')
+from building import *
+
+cwd = GetCurrentDir()
+
+# add the general drivers.
+src = Split("""
+board.c
+MCUX_Config/clock_config.c
+MCUX_Config/pin_mux.c
+flexspi_octal_flash_ops.c
+""")
+
+sd_fs_src = Split("""
+fatfs_sdcard.c
+sdmmc_config.c
+""")
+
+CPPPATH = [cwd,cwd + '/MCUX_Config']
+
+CPPDEFINES = ['CPU_MIMXRT685SFVKB_cm33', 'STD=C99', 'FSL_SDK_DRIVER_QUICK_ACCESS_ENABLE=1', 'BOOT_HEADER_ENABLE=1']
+
+if GetDepend(['COMPONENT_MCU_ISP']):
+    CPPDEFINES += ['USB_STACK_BM']
+    CPPDEFINES += ['USB_STACK_USE_DEDICATED_RAM=1']
+
+if sblprofile.CROSS_TOOL == 'keil':
+    CPPDEFINES.append('__FPU_PRESENT=1')
+    LIBS = ['keil_lib_power']
+    cwd = GetCurrentDir()
+    LIBPATH = [cwd + '/../device/MIMXRT685S/arm']
+    group = DefineGroup('board', src, depend = [''], CPPPATH = CPPPATH, CPPDEFINES=CPPDEFINES, LIBS=LIBS, LIBPATH=LIBPATH)
+elif sblprofile.CROSS_TOOL == 'gcc':
+    LIBS = ['libpower_hardabi']
+    cwd = GetCurrentDir()
+    LIBPATH = [cwd + '/../device/MIMXRT685S/gcc']
+    group = DefineGroup('board', src, depend = [''], CPPPATH = CPPPATH, CPPDEFINES=CPPDEFINES, LIBS=LIBS, LIBPATH=LIBPATH)
+else: 
+    LIBS = ['iar_lib_power']
+    cwd = GetCurrentDir()
+    LIBPATH = [cwd + '/../device/MIMXRT685S/iar']
+    group = DefineGroup('board', src, depend = [''], CPPPATH = CPPPATH, CPPDEFINES=CPPDEFINES, LIBS=LIBS, LIBPATH=LIBPATH)
+
+list = os.listdir(cwd)
+
+for item in list:
+    if os.path.isfile(os.path.join(cwd, item, 'SConscript')):
+        group = group + SConscript(os.path.join(item, 'SConscript'))
+
+Return('group')

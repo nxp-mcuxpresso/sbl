@@ -1,0 +1,38 @@
+/*!
+@addtogroup usb_host_msc_drv The USB Mass Storage Class (or USB MSC)
+@{
+@details The USB Mass Storage Class (or USB MSC) defines the mass storage USB device. A typical example is a U-disk. 
+This section describes the programming interface of the USB Host MSC class driver.
+The USB Host MSC class driver handles the specific control requests for MSC class and transfers data to and from the device through the interrupt pipe.
+
+# USB Host MSC Initialization {#USBHostMscInit}
+
+When the MSD device is attached, the MSD initialization flow is as follows:
+@image latex host_msd_initialization.jpg "Host MSD Initialization"
+
+The above figure describes the following steps:
+    - Call the USB_HostMsdInit to initialize the MSD class instance #usb_host_msd_instance_t and the return class handle pointer to the MSD class instance.
+      The driver uses an instantiation of the usb_host_msd_instance_t structure to maintain the current state of a MSC instance module driver. 
+      This structure holds the USB host handle and the USB device handle and keeps track of transfer information, alternate setting, pipes 
+      and interfaces that are enumerated for attached MSC device.
+    - Call the USB_HostMsdSetInterface to set the MSD class interface, which opens the interface's pipes.
+    - Wait the last step operation callback.
+    - Test the MSD device: read capacity, write data, or read data.
+
+# USB Host MSC Deinitialization {#USBHostMscDeinit}
+
+An application calls the USB_HostMsdDeinit to deinitialize the MSD. This function cancels the transfer, closes the pipe, and releases the MSD class instance.
+@n There are two use cases to call this function:
+- The MSD device is detached and this function is called to free the resource.
+- An application calls this function and then calls the USB_HostMsdInit to reinitialize the MSD class.
+
+# USB Host MSC UFI Command{#USBHostMscCommand}
+
+Provides the buffer pointer, the buffer length, the callback function, the callback parameter, and other parameters and calls the USB_HostMsdxx to start an 
+asynchronous MSD UFI command.
+Then, the callback function is called with one command status parameter when the command succeeds or fails. 
+For example, USB_HostMsdRead10 needs these parameters: buffer pointer, reading length, reading block number, callback function, callback parameter, 
+logical unit number and start the block address.
+
+
+@} */

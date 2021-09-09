@@ -1,0 +1,18 @@
+from building import *
+
+# The set of source files associated with this SConscript file.
+cwd = GetCurrentDir()
+
+# add the common files.
+src = Split("""
+image_header.c
+""")
+
+CPPPATH = [cwd]
+
+if GetDepend(['CONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256']):
+    src += ['./sign-ecdsap256-pub.c']
+
+group = DefineGroup('mcuboot-secure', src, depend = ['COMPONENT_MCUBOOT_SECURE'], CPPPATH = CPPPATH)
+
+Return('group')

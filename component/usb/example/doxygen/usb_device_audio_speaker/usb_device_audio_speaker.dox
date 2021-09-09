@@ -1,0 +1,81 @@
+/*!
+
+@addtogroup device_audio_example
+@{
+
+@defgroup device_audio_speaker Audio Speaker Example
+@{
+
+# Overview
+
+The USB Audio Speaker application is a simple demonstration program based on the MCUXpresso SDK. 
+It is enumerated as a playback device and users can play music using the device.
+
+
+# System Requirement
+
+## Hardware requirements
+
+- Mini/micro USB cable
+- USB A to micro AB cable
+- Hardware (Tower System base/module) with a SGTL board (except MAPS-KS22)
+- Personal Computer(PC)
+
+
+## Software requirements
+
+- The path for the project files for lite version example is: 
+@n <MCUXpresso_SDK_Install>/boards/<board>/usb_examples/usb_device_audio_speaker_lite/<rtos>/<toolchain>.
+@n  For non-lite version example, the path is: 
+@n <MCUXpresso_SDK_Install>/boards/<board>/usb_examples/usb_device_audio_speaker/<rtos>/<toolchain>.
+@note The <rtos> is Bare Metal or FreeRTOS OS.
+
+.
+
+# Getting Started
+
+## Hardware Settings
+
+@note Set the hardware jumpers (Tower system/base module) to default settings.
+
+.
+
+## Prepare the example
+
+1.  Download the program to the target board.
+2.  Connect the target board to the external power source (the example is self-powered).
+3.  Either press the reset button on the board or launch the debugger in the IDE to start running
+    the demo.
+4.  Connect a USB cable between the PC host and the USB device port on the board.
+
+For detailed instructions, see the appropriate board User's Guide.
+
+# Run the example in Windows (USB AUDIO CLASS 1.0)
+
+1.  Plug-in the audio speaker device which is running the Audio Speaker example into the PC. 
+2.  A USB AUDIO DEMO device shows up as enumerated in the Device Manager.
+3.  Right click on the sound control icon of the Start bar (close to the clock) and select "Playback devices".
+@image html usb_device_audio_speaker_right_click_icon.jpg
+@image latex usb_device_audio_speaker_right_click_icon.jpg "Sound control icon"
+4.  In the pop-up window, select the "Playback" device with the description "USB Audio Device" and click on the "Properties" button.
+@image html usb_device_audio_speaker_select_properties.jpg
+@image latex usb_device_audio_speaker_select_properties.jpg "Select properties"
+5.  In the new window, go to "Levels" tab and move the slide until 100%. Click "OK".
+@image html usb_device_audio_speaker_change_level.jpg
+@image latex usb_device_audio_speaker_change_level.jpg "Change level"
+6.  In the previous window, ensure that the "USB Audio Device" is still selected and click on the "Set Default" button. Click on the "OK" button. 
+@image html usb_device_audio_speaker_set_default.jpg
+@image latex usb_device_audio_speaker_set_default.jpg "Set default"
+7.  Open the Window Media Player application, select, and play your favorite song. 
+
+# Run the example on a Mac<sup>®</sup> (USB AUDIO CLASS 2.0)
+1.  Plug-in the audio speaker device which is running the Audio Speaker example into the Mac.
+2.  A USB audio device shows up as enumerated in the sound catalogue under the System Preferences.
+3.  Select the USB audio speaker device as the default audio device in the sound catalogue under System Preferences.
+4.  Open the QuickTime application. Select and play your favorite song.
+
+@note The device audio speaker example has an ISO IN feedback, please attach the device to a host like PC which supports feedback function.
+Otherwise, there might be attachment issue or other problems.
+
+@}
+@} */

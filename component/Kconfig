@@ -1,0 +1,11 @@
+menu "MCU SBL Component"
+
+source "$SBL_DIR/component/flashiap/Kconfig"
+
+source "$SBL_DIR/component/secure/Kconfig"
+
+source "$SBL_DIR/component/serial_manager/Kconfig"
+
+source "$SBL_DIR/component/mcu_isp/Kconfig"
+
+endmenu

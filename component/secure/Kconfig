@@ -1,0 +1,71 @@
+menu "secure"
+    config COMPONENT_MCUBOOT_SECURE
+        bool "Select image security function"
+        default y
+
+        if COMPONENT_MCUBOOT_SECURE
+		config CONFIG_BOOT_SIGNATURE
+			bool "Signature function"
+			default n
+			help
+				Use signature function.
+			if CONFIG_BOOT_SIGNATURE
+				choice
+					prompt "Selected signing method"
+		
+					config CONFIG_BOOT_SIGNATURE_TYPE_RSA
+						bool "Select signature type RSA"
+						help
+							Set signature type as RSA.
+
+					config CONFIG_BOOT_SIGNATURE_TYPE_ROM
+						bool "Select signature type ROM use"
+						help
+							Set signature type ROM use.
+                        depends on (SOC_IMXRTYYYY_SERIES || SOC_LPC55S69_SERIES)
+
+					config CONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256
+						bool "Select signature type ECDSA_P256"
+						help
+							Set signature type as ECDSAP256.
+				endchoice
+				
+				if SOC_IMXRTYYYY_SERIES
+					config CONFIG_HAB_CLOSE
+						bool "Verify HAB close"
+						default n
+						help
+                            Check if HAB is in closed state. If not, verification would be failed.
+                    depends on CONFIG_BOOT_SIGNATURE_TYPE_ROM
+                endif
+				
+				if CONFIG_BOOT_SIGNATURE_TYPE_RSA
+					config CONFIG_BOOT_SIGNATURE_TYPE_RSA_LEN
+					int "rsa length"
+					default 2048
+				endif
+			endif
+
+    	    if SOC_IMXRTYYYY_SERIES
+                config CONFIG_BOOT_ENCRYPTED_XIP
+                    bool "Encrypted XIP function"
+                    default n
+    		        help
+        		        Use encrypted application image.
+            endif
+        endif
+
+        config COMPONENT_MBEDTLS
+            bool "enable mbedtls"
+            default y
+            help
+                enable mbedtls.
+		
+    	if COMPONENT_MBEDTLS
+    	    config SBL_MBEDTLS_CONFIG_FILE
+    	        string "Set mbedtls config file"
+    	        default "ksdk_mbedtls_config.h"
+    	        help
+    	            Set the specific mbedtls config file.
+    	endif
+endmenu

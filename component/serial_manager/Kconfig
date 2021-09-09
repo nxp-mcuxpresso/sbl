@@ -1,0 +1,37 @@
+menu "Serial Manager"
+
+config COMPONENT_SERIAL_MANAGER
+    bool "Enable serial manager"
+    default y
+    help
+        Enable serial manager
+
+if COMPONENT_SERIAL_MANAGER
+
+    choice
+        prompt "Select the serial port"
+        default COMPONENT_SERIAL_MANAGER_LPUART
+
+        config COMPONENT_SERIAL_MANAGER_LPUART
+            bool "lpuart"
+
+        config COMPONENT_SERIAL_MANAGER_USB
+            bool "serial over USB"
+
+        config COMPONENT_SERIAL_MANAGER_SWO
+            bool "SWO"
+
+    endchoice
+
+    config SERIAL_PORT_TYPE_UART
+	int
+	default 1 if COMPONENT_SERIAL_MANAGER_LPUART
+    config SERIAL_PORT_TYPE_USBCDC
+	int
+	default 1 if COMPONENT_SERIAL_MANAGER_USB
+    config SERIAL_PORT_TYPE_SWO
+	int
+	default 1 if COMPONENT_SERIAL_MANAGER_SWO
+endif
+
+endmenu

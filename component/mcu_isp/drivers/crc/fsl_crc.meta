@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+  <components>
+    <component name="platform.drivers.crc.support" requires="devices.modules.D_IP_CRC_16_32_PROG_SYN_011"/>
+    <component name="platform.drivers.crc.support" requires="devices.modules.D_IP_CRC_16_32_PROG_SYN_009"/>
+    <component description="CRC Driver" name="platform.drivers.crc" provides="platform.drivers" requires="platform.drivers.crc.support" type="driver">
+      <source path="./">
+        <files mask="fsl_crc.c"/>
+        <files mask="fsl_crc.h"/>
+      </source>
+    </component>
+  </components>
+</metadata>

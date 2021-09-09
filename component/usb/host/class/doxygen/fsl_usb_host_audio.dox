@@ -1,0 +1,45 @@
+/*!
+@addtogroup usb_host_audio_drv
+@{
+@details The audio device class definition applies to all devices or functions embedded in composite devices that
+are used to manipulate audio, voice, and sound-related functionality. This includes both audio data
+(analog and digital) and the functionality that is used to directly control the audio environment, such as
+volume and tone Control. Typical examples of audio class devices include the USB audio speaker. 
+This section describes the programming interface of the USB HOST audio class driver.
+The USB HOST audio class driver handles the specific control requests for audio class and transfers data to and from the device through the isochronous pipe.
+
+# USB Host audio Initialization {#USBHostAudioInit}
+
+When audio device is attached, audio initialization occurs as follows:
+@image latex host_audio_initialization.jpg "Host Audio Initialization"
+The above figure describes the following steps:
+    - Call the USB_HostAudioInit to initialize audio class instance #audio_instance_t and the return class handle pointer to the audio class instance.
+      The driver uses an instantiation of the audio_instance_t structure to maintain the current state of a audio instance module driver. 
+      This structure holds the USB host handle, the USB device handle, and keeps track of transfer information, alternate setting, pipes 
+      and interfaces that are enumerated for attached audio device.
+    - Call the USB_HostAudioControlSetInterface to set the audio class control interface, which opens the interface's pipes.
+    - Wait the last step operation callback.
+	- Call the USB_HostAudioStreamSetInterface to set the audio class stream interface, which opens the interface's pipes.
+    - Wait the last step operation callback.
+    - Call the USB_HostAudioStreamRecv to receive isochronous data from the device, or call USB_HostAudioStreamSend to send isochronous data to the device.
+    - Wait the last step operation callback.
+    - Process data and receive or send again.
+
+# USB Host audio De-initialization {#USBHostAudioDeinit}
+
+An application can call the usb_host_audio_deinit to deinitialize audio. This function cancels the transfer, closes the pipe, and releases the audio class instance.
+@n There are two use cases when calling this function:
+- The audio device is detached and this function is called to free the resource.
+- The application calls this function and calls the USB_HostAudioInit to reinitialize the audio class.
+
+# USB Host audio Send data{#USBHostAudioSend}
+
+Provides the buffer pointer, buffer length, the callback function, and the callback parameter and call the USB_HostAudioStreamSend to start asynchronous sending.
+Then, the callback function is called with one transfer status parameter when the transfer succeeds or fails. 
+
+# USB Host audio Receive data{#USBHostAudioReceive}
+
+Provides the buffer pointer, buffer length, the callback function, and the callback parameter and calls the USB_HostAudioStreamRecv to start asynchronous receiving.
+Then, the callback function is called with one transfer status parameter when the transfer succeeds or fails. 
+
+@} */

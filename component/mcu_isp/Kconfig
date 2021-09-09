@@ -1,0 +1,17 @@
+menu "mcu isp support"
+
+config COMPONENT_MCU_ISP
+    bool "Enable mcu isp support"
+    default n
+    help
+        Enable mcu isp support.
+
+    if COMPONENT_MCU_ISP
+        config ISP_TIMEOUT
+            int "Set isp timeout by seconds"
+            default 5
+            help
+                Set isp timeout to wait for USB/UART connection.
+    endif
+
+endmenu

@@ -1,0 +1,73 @@
+/*!
+
+@addtogroup device_video_example
+@{
+
+@defgroup device_video_flexio_camera Video FlexIO Camera Example
+@{
+
+# Overview
+
+The USB video FlexIO camera application is a simple demonstration program based on the MCUXpresso SDK.
+It is enumerated as a camera and users can see the video of the device by using a PC test tool.
+
+# System Requirement
+
+## Hardware requirements
+
+- Mini/micro USB cable
+- USB A to micro AB cable
+- Hardware (Tower module/base board, OV7670 camera module, and so on) for a specific device
+- Personal Computer (PC)
+
+
+## Software requirements
+
+- The project files for lite version example are in:
+@n <MCUXpresso_SDK_Install>/boards/<board>/usb_examples/usb_device_video_flexio_ov7670_lite/<rtos>/<toolchain>.
+@n  For non-lite version example, the path is:
+@n <MCUXpresso_SDK_Install>/boards/<board>/usb_examples/usb_device_video_flexio_ov7670/<rtos>/<toolchain>.
+@note The <rtos> is Bare Metal or FreeRTOS OS.
+
+- Download and install the PC Test tool <a href="http://dldir1.qq.com/qqfile/QQIntl/QQi_PC/QQIntl2.11.exe" title="QQ International download link">"QQ International"</a>, or from http://www.imqq.com/#download.
+@note The video virtual camera example is tested in Microsoft Windows 7 OS Enterprise X64.
+
+
+# Getting Started
+
+## Hardware Settings
+
+@note Set the hardware jumpers (Tower system/base module) to default settings.
+
+.
+
+## Prepare the example
+
+1.  Download the program to the target board.
+2.  Connect the target board to the external power source (the example is self-powered).
+3.  Power off the target board. And then power on again.
+4.  Connect a USB cable between the PC and the USB device port of the board.
+
+@note For detailed instructions, see the appropriate board User's Guide.
+
+# Run the example
+
+1.  Plug in the device, which is running video FlexIO camera application, into the PC. An imaging device "FlexIO Camera Demo" is enumerated in the Device Manager.\n
+@image html usb_device_video_flexio_test_tool_attached.jpg
+@image latex usb_device_video_flexio_test_tool_attached.jpg "The video device is attached"
+2.  Open the tool "Tencent QQ" and log in.\n
+@image html usb_device_video_flexio_test_tool_login.jpg
+@image latex usb_device_video_flexio_test_tool_login.jpg "Login the test tool"
+3.  Open the video test form Main Menu->Settings->General->Audio and Video->Video Settings.\n
+@image html usb_device_video_flexio_test_tool_open_tool.jpg
+@image latex usb_device_video_flexio_test_tool_open_tool.jpg "Video Settings form"
+4.  Select the "FlexIO Camera Demo" in DropBox. The video can be seen in the form.\n
+@image html usb_device_video_flexio_test_tool_open_device.jpg
+@image latex usb_device_video_flexio_test_tool_open_device.jpg "Open the video device"
+
+@note The resolution is 160 * 120 and the video image format is RGB565. The frame interval includes 20, 15, 10, and 5, and the default frame interval is 20.
+
+@}
+
+@}
+*/

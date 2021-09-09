@@ -1,0 +1,104 @@
+/*!
+@defgroup usb_host_drv USB Host driver
+@{
+*/
+
+/*!
+@defgroup usb_host_controller_driver USB Host Controller driver
+@ingroup usb_host_drv
+*/
+
+/*!
+@addtogroup usb_host_drv
+@details The USB host driver implements USB host basic functions, such as the device enumeration, USB standard request, and send/receive data.
+It is the middle layer between the class driver and the controller driver. It provides the same APIs for different controller drivers.
+*/
+
+/*!
+@addtogroup usb_host_controller_driver
+@{
+@details The USB Host controller driver implements the real send/receive function. Implementations are different for different controllers.
+The supported controller drivers are KHCI, EHCI,IP3516HS and so on.
+@{
+*/
+
+/*!
+@defgroup usb_host_controller_khci USB Host Controller KHCI driver
+@ingroup usb_host_controller_driver
+@details The KHCI host controller driver implements send/receive data through the KHCI IP.
+*/
+
+/*!
+@defgroup usb_host_controller_ehci USB Host Controller EHCI driver
+@ingroup usb_host_controller_driver
+@details The EHCI host controller driver implements send/receive data through the EHCI IP.
+*/
+
+/*!
+@defgroup usb_host_controller_ip3516hs USB Host Controller IP3516HS driver
+@ingroup usb_host_controller_driver
+@details The IP3516HS host controller driver implements send/receive data through the IP3516HS IP.
+*/
+
+/*!
+@defgroup usb_host_controller_ohci USB Host Controller OHCI driver
+@ingroup usb_host_controller_driver
+@details The OHCI host controller driver implements send/receive data through the OHCI IP.
+*/
+
+/*! @} */
+
+/*! @} */
+
+/*! @} */
+
+/*!
+@defgroup usb_host_class_driver USB Class driver
+@{
+*/
+
+/*!
+@defgroup usb_host_cdc_drv USB CDC Class driver
+@ingroup usb_host_class_driver
+*/
+
+/*!
+@defgroup usb_host_hid_drv USB HID Class driver
+@ingroup usb_host_class_driver
+*/
+
+/*!
+@defgroup usb_host_msc_drv USB MSC Class driver
+@ingroup usb_host_class_driver
+*/
+
+/*!
+@defgroup usb_host_audio_drv USB AUDIO Class driver
+@ingroup usb_host_class_driver
+*/
+
+/*!
+@defgroup usb_host_phdc_drv USB PHDC Class driver
+@ingroup usb_host_class_driver
+*/
+
+/*!
+@defgroup usb_host_printer_drv USB PRINTER Class driver
+@ingroup usb_host_class_driver
+*/
+
+/*! @} */
+
+/*!
+@defgroup usb_os_abstraction USB OS Adapter
+@details The OS adapter (OSA) is used to wrap the differences between RTOSes and enable a USB stack with the same code base and behavior.
+@note OSA should not be used in the USB application. Therefore, from the USB application viewpoint, OSA is invisible.
+*/
+
+/*!
+@defgroup usb_drv Definitions and structures
+@details This lists the common definitions and structures for the USB stack.
+@{
+*/
+
+/*! @} */

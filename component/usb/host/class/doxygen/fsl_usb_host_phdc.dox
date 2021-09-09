@@ -1,0 +1,46 @@
+/*!
+@addtogroup usb_host_phdc_drv The USB Personal Healthcare Device Class (or USB PHDC)
+@{
+@details The USB Personal Healthcare Device Class (or USB PHDC) defines personal healthcare devices
+such as weight scales, thermometers, blood pressure meters, glucose meters, and pulse oximeters.  
+This section describes the programming interface of the USB Host PHDC class driver.
+The USB Host PHDC class driver handles the specific control requests for the PHDC class and transfers data to and from the device through the interrupt and bulk pipes.
+
+# USB Host PHDC Initialization {#USBHostPhdcInit}
+
+When the personal healthcare device is attached, the PHDC initialization flow is as follows:
+@image latex host_phdc_initialization.jpg "Host PHDC Initialization"
+
+The above figure describes the following steps:
+    - Call the USB_HostPhdcInit to initialize the PHDC class instance #usb_host_phdc_instance_t and the return class handle
+      pointer to the PHDC class instance.
+      The driver uses an instantiation of the usb_host_phdc_instance_t structure to maintain the current state of a
+      PHDC instance module driver. 
+      This structure holds the USB host handle and the USB device handle and keeps track of transfer information,
+      alternate setting, pipes and interfaces that are enumerated for attached personal healthcare device.
+    - Call the USB_HostPhdcSetInterface to sets the PHDC class interface, which opens the interface's pipes.
+    - Wait the last step operation callback.
+    - Call the USB_HostPhdcRecv to receive data from device, or call the USB_HostPhdcSend to send data to device.
+    - Wait the last step operation callback.
+    - Process data and receive or send again.
+
+# USB Host PHDC Deinitialization {#USBHostPhdcDeinit}
+
+An application can call the usb_host_phdc_deinit to deinitialize the PHDC. This function cancels the transfer, closes the pipe, and releases the PHDC class instance.
+@n There are two use cases to call this function:
+- A personal healthcare device is detached and this function is called to free the resource.
+- An application calls this function and then calls USBHostPhdcInit to re-initialize the PHDC class.
+
+# USB Host PHDC Send data{#USBHostPhdcSend}
+
+Provides the buffer pointer, the buffer length, the callback function, the callback parameter and calls the USB_HostPhdcSend
+function to start asynchronous sending.
+Then, the callback function is called with one transfer status parameter when the transfer succeeds or fails. 
+
+# USB Host PHDC Receive data{#USBHostPhdcReceive}
+
+Provides the buffer pointer, the buffer length, the callback function, the callback parameter and call the USB_HostPhdcRecv 
+function to start asynchronous receiving.
+Then, the callback function is called with one transfer status parameter when the transfer succeeds or fails. 
+
+@} */

@@ -1,0 +1,48 @@
+/*!
+@addtogroup usb_host_cdc_drv The USB Communications Device Class (or USB CDC)
+@{
+@details  
+The Communication Class defines mechanisms for a device and host to identify which existing protocols to use.
+It also defines an architecture that is capable of supporting any communications devices. The communications device class and associated subclass 
+specifications, such as ISDN and PSTN, provides information
+to guide implementers in using the USB logical structures for communications device. 
+   This section uses the PSTN as the subclass and describes the programming interface of the USB HOST CDC class driver.
+The USB HOST HID class driver handles the specific control requests for CDC class and  transfers data to and from the device through the bulk pipe.
+
+# USB Host CDC Initialization {#USBHostCdcInit}
+
+When the CDC device is attached, the CDC initialization flow is as follows:
+@image latex host_cdc_initialization.jpg "Host CDC Initialization"
+
+The above figure describes the following steps:
+    - Call the USB_HostCdcInit to initialize the CDC class instance #usb_host_cdc_instance_struct_t. Save the 
+	class handle pointer into the #usb_host_cdc_instance_struct_t.
+      The driver uses an instantiation of the usb_host_cdc_instance_struct_t structure to maintain the current state of a CDC instance module driver. 
+      This structure holds the USB host handle, the USB device handle and keeps track of transfer information, alternate setting, pipes, 
+      and interfaces that are enumerated for the attached CDC device.
+    - Call the USB_HostCdcSetControlInterface to set the CDC class control interface, which opens the interface's pipes.
+    - Wait for the last step operation callback.
+    - Call the USB_HostCdcSetDataInterface to set the CDC class data interface, which opens the interface's pipes.
+    - Wait for the last step operation callback.
+    - Call the USB_HostCdcDataRecv to receive data from device, or call USB_HostCdcDataSend to send data to the device.
+    - Wait for the last step operation callback.
+    - Process data and receive or send again.
+
+# USB Host CDC De-initialization {#USB_HostCdcDeinit}
+
+An application can call the USB_HostCdcDeinit to deinitialize the CDC. This function cancels the transfer, closes the pipe, and frees the HID class instance.
+@n There are two cases to call this function:
+- The CDC device is detached and this function is called to free the resource.
+- An application calls this function and calls the USB_HostCdcInit to re-initialize the CDC class.
+
+# USB Host CDC Send data{#USB_HostCdcDataSend}
+
+Provides the buffer pointer, the buffer length, the callback function, and the callback parameter and call USB_HostCdcDataSend to start asynchronous sending.
+Then the callback function is called with one transfer status parameter when the transfer succeeds or fails. 
+
+# USB Host CDC Receive data{#USB_HostCdcDataRecv}
+
+Provides the buffer pointer, the buffer length, the callback function, and the callback parameter and calls USB_HostCdcDataRecv to start asynchronous receiving.
+Then, the callback function is called with one transfer status parameter when the transfer succeeds or fails. 
+
+@} */

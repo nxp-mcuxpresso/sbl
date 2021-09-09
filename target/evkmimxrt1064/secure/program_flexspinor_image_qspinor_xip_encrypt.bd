@@ -1,0 +1,72 @@
+
+# The source block assign file name to identifiers
+sources {
+ myBinFile = extern (0);
+}
+
+constants {
+    kAbsAddr_Start= 0x70000000;
+    kAbsAddr_Ivt = 0x70001000;
+    kAbsAddr_App = 0x70002000;
+}
+
+# The section block specifies the sequence of boot commands to be written to the SB file
+section (0) {
+
+    #1. Prepare Flash option
+    # 0xc0000006 is the tag for Serial NOR parameter selection
+    # bit [31:28] Tag fixed to 0x0C
+    # bit [27:24] Option size fixed to 0
+    # bit [23:20] Flash type option
+    #             0 - QuadSPI SDR NOR 
+    #             1 - QUadSPI DDR NOR
+    #             2 - HyperFLASH 1V8 
+    #             3 - HyperFLASH 3V
+    #             4 - Macronix Octal DDR 
+    #             6 - Micron Octal DDR 
+    #             8 - Adesto EcoXIP DDR
+    # bit [19:16] Query pads (Pads used for query Flash Parameters)
+    #             0 - 1
+    #             2 - 4
+    #             3 - 8
+    # bit [15:12] CMD pads (Pads used for query Flash Parameters)
+    #             0 - 1
+    #             2 - 4
+    #             3 - 8
+    # bit [11: 08] Quad Mode Entry Setting
+    #             0 - Not Configured, apply to devices: 
+    #                 - With Quad Mode enabled by default or
+    #                 - Compliant with JESD216A/B or later revision
+    #             1 - Set bit 6 in Status Register 1
+    #             2 - Set bit 1 in Status Register 2
+    #             3 - Set bit 7 in Status Register 2
+    #             4 - Set bit 1 in Status Register 2 by 0x31 command 
+    # bit [07: 04]  Misc. control field
+    #             3 - Data Order swapped, used for Macronix OctaFLASH devcies only (except MX25UM51345G)
+    #             4 - Second QSPI NOR Pinmux
+    # bit [03: 00] Flash Frequency, device specific
+    load 0xc0000004 > 0x2000;
+    # Configure QSPI NOR FLASH using option a address 0x2000
+    enable flexspinor 0x2000;
+    
+    #2 Erase flash as needed.(Here only 256KBytes are erased)
+    erase 0x70000000..0x70040000;
+
+    #3. Program config block
+    # 0xf000000f is the tag to notify Flashloader to program FlexSPI NOR config block to the start of device
+    load 0xf000000f > 0x3000;
+    # Notify Flashloader to response the option at address 0x3000
+    enable flexspinor 0x3000;
+
+    #5. Program image
+    load myBinFile > 0x70000400;
+
+    #6. Enabel SW_GP2 as BEE key
+    # load fuse 0x0000f000 >0x06;
+
+    #7. Program SW_GP2
+    # load fuse 0xccddeeff >0x29;
+    # load fuse 0x8899aabb >0x2a;
+    # load fuse 0x44556677 >0x2b;
+    # load fuse 0x00112233 >0x2c;
+}

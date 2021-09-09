@@ -1,0 +1,53 @@
+import os
+import sys
+import shutil
+import sblprofile
+
+if os.getenv('SBL_ROOT'):
+    SBL_ROOT = os.getenv('SBL_ROOT')
+else:
+    SBL_ROOT = os.path.normpath(os.getcwd() + '/../..')
+
+sys.path = sys.path + [os.path.join(SBL_ROOT, 'tools')]
+try:
+    from building import *
+except:
+    print('Cannot found SBL root directory, please check SBL_ROOT')
+    print(SBL_ROOT)
+    exit(-1)
+
+TARGET = 'sbl.' + sblprofile.TARGET_EXT
+DefaultEnvironment(tools=[])
+if sblprofile.PLATFORM == 'armcc':
+    env = Environment(tools = ['mingw'],
+        AS = sblprofile.AS, ASFLAGS = sblprofile.AFLAGS,
+        CC = sblprofile.CC, CCFLAGS = sblprofile.CFLAGS,
+        CXX = sblprofile.CXX, CXXFLAGS = sblprofile.CXXFLAGS,
+        AR = sblprofile.AR, ARFLAGS = '-rc',
+        LINK = sblprofile.LINK, LINKFLAGS = sblprofile.LFLAGS,
+        # overwrite cflags, because cflags has '--C99'
+        CXXCOM = '$CXX -o $TARGET --cpp -c $CXXFLAGS $_CCCOMCOM $SOURCES')
+else:
+    env = Environment(tools = ['mingw'],
+        AS = sblprofile.AS, ASFLAGS = sblprofile.AFLAGS,
+        CC = sblprofile.CC, CCFLAGS = sblprofile.CFLAGS,
+        CXX = sblprofile.CXX, CXXFLAGS = sblprofile.CXXFLAGS,
+        AR = sblprofile.AR, ARFLAGS = '-rc',
+        LINK = sblprofile.LINK, LINKFLAGS = sblprofile.LFLAGS,
+        CXXCOM = '$CXX -o $TARGET -c $CXXFLAGS $_CCCOMCOM $SOURCES')
+
+env.PrependENVPath('PATH', sblprofile.EXEC_PATH)
+
+if sblprofile.PLATFORM == 'iar':
+    env.Replace(CCCOM = ['$CC $CCFLAGS $CPPFLAGS $_CPPDEFFLAGS $_CPPINCFLAGS -o $TARGET $SOURCES'])
+    env.Replace(ARFLAGS = [''])
+    env.Replace(LINKCOM = env["LINKCOM"] + ' --map sbl.map')
+
+Export('SBL_ROOT')
+Export('sblprofile')
+
+# prepare building environment
+objs = PrepareBuilding(env, SBL_ROOT, has_libcpu=False)
+
+# make a building
+DoBuilding(TARGET, objs)

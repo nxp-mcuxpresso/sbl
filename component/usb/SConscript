@@ -1,0 +1,33 @@
+from building import *
+
+# The set of source files associated with this SConscript file.
+src = Split('''
+device/class/usb_device_class.c
+device/class/usb_device_hid.c
+device/class/usb_device_msc.c
+device/class/usb_device_msc_ufi.c
+device/usb_device_ch9.c
+device/usb_device_dci.c
+osa/usb_osa_bm.c
+''')
+cwd = GetCurrentDir()
+CPPPATH = [cwd,
+           cwd + "/include",
+           cwd + "/osa",
+           cwd + "/phy",
+           cwd + "/device",
+           cwd + "/device/class"]
+
+if GetDepend(['SOC_IMXRTYYYY_SERIES']):
+    src.append('device/usb_device_ehci.c')
+
+if GetDepend(['SOC_IMXRTXXX_SERIES']):
+    src.append('device/usb_device_lpcip3511.c')
+    src.append('phy/usb_phy.c')
+
+if GetDepend(['SOC_LPC_SERIES']):
+    src.append('device/usb_device_lpcip3511.c')
+
+group = DefineGroup('mcuisp_src', src, depend = ['COMPONENT_MCU_ISP'], CPPPATH = CPPPATH)
+
+Return('group')

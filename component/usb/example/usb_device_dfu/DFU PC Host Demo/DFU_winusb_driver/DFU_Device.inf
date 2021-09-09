@@ -1,0 +1,104 @@
+[Version]
+Signature = "$Windows NT$"
+Class = "DFU Devices"
+ClassGuid={E18DB3C3-5281-4ac1-924C-381E1AE39157}
+Provider = "Freescale Semiconductor INC"
+CatalogFile= DFU_device.cat
+DriverVer = 10/02/2010, 1.0.0.0
+; ================== Class section ==================
+
+[ClassInstall32]
+Addreg=DFU Devices_Reg
+
+[DFU Devices_Reg]
+HKR,,,0,"DFU Devices"
+HKR,,Icon,,-1
+
+; ========== Manufacturer/Models sections ===========
+
+[Manufacturer]
+"Freescale Semiconductor INC" = DFU_Device_WinUSB,NTx86,NTamd64,NTia64
+
+[DFU_Device_WinUSB.NTx86]
+"Device firmware upgrade" =USB_Install, USB\VID_1FC9&PID_1000
+
+[DFU_Device_WinUSB.NTamd64]
+"Device firmware upgrade" =USB_Install, USB\VID_1FC9&PID_1000
+[DFU_Device_WinUSB.NTia64]
+"Device firmware upgrade" =USB_Install, USB\VID_1FC9&PID_1000
+; =================== Installation ===================
+
+;[1]
+[USB_Install]
+Include=winusb.inf
+Needs=WINUSB.NT
+
+;[2]
+[USB_Install.Services]
+Include=winusb.inf
+AddService=WinUSB,0x00000002,WinUSB_ServiceInstall
+
+;[3]
+[WinUSB_ServiceInstall]
+DisplayName     = %WinUSB_SvcDesc%
+ServiceType     = 1
+StartType       = 3
+ErrorControl    = 1
+ServiceBinary   = %12%\WinUSB.sys
+
+;[4]
+[USB_Install.Wdf]
+KmdfService=WINUSB, WinUsb_Install
+
+[WinUSB_Install]
+KmdfLibraryVersion=1.9
+
+;[5]
+[USB_Install.HW]
+AddReg=Dev_AddReg
+
+[Dev_AddReg]
+HKR,,DeviceInterfaceGUIDs,0x10000,"{850F69DF-CA91-42ef-9C8A-275569B5DA89}"
+
+;[6]
+[USB_Install.CoInstallers]
+AddReg=CoInstallers_AddReg
+CopyFiles=CoInstallers_CopyFiles
+
+[CoInstallers_AddReg]
+HKR,,CoInstallers32,0x00010000,"WdfCoInstaller01009.dll,WdfCoInstaller","winusbcoinstaller2.dll"
+
+[CoInstallers_CopyFiles]
+winusbcoinstaller2.dll
+WdfCoInstaller01009.dll
+
+[DestinationDirs]
+CoInstallers_CopyFiles=11
+
+; ================= Source Media Section =====================
+;[7]
+
+[SourceDisksNames]
+1 = %DFU_device_DiskName%,,,\x86
+2 = %DFU_device_DiskName%,,,\amd64
+3 = %DFU_device_DiskName%,,,\ia64
+
+[SourceDisksFiles.x86]
+winusbcoinstaller2.dll=1
+WdfCoInstaller01009.dll=1
+
+[SourceDisksFiles.amd64]
+winusbcoinstaller2.dll=2
+WdfCoInstaller01009.dll=2
+
+[SourceDisksFiles.ia64]
+winusbcoinstaller2.dll=3
+WdfCoInstaller01009.dll=3
+; =================== Strings ===================
+
+[Strings]
+ProviderName="Freescale Semiconductor INC"
+USB\DFU_Device.DeviceDesc="DFU Device"
+WinUSB_SvcDesc="WinUSB"
+DISK_NAME="My Install Disk"
+ClassName="DFU Devices"

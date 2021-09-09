@@ -1,0 +1,32 @@
+Import('sblprofile')
+from building import *
+
+cwd = GetCurrentDir()
+
+# add the general drivers.
+src = Split("""
+board.c
+MCUX_Config/clock_config.c
+MCUX_Config/pin_mux.c
+flexspi_nor_flash_ops.c
+""")
+
+CPPPATH = [cwd,cwd + '/MCUX_Config']
+
+CPPDEFINES = ['XIP_EXTERNAL_FLASH=1', 'XIP_BOOT_HEADER_ENABLE=1', 'CPU_MIMXRT1011DAE5A', 'STD=C99', 'SKIP_SYSCLK_INIT', 'EVK_MCIMXRM', 'FSL_SDK_ENABLE_DRIVER_CACHE_CONTROL']
+
+if GetDepend(['COMPONENT_MCU_ISP']):
+    CPPDEFINES += ['USB_STACK_BM']
+
+if sblprofile.CROSS_TOOL == 'keil':
+    CPPDEFINES.append('__FPU_PRESENT=1')
+    
+group = DefineGroup('board', src, depend = [''], CPPPATH = CPPPATH, CPPDEFINES=CPPDEFINES)
+
+list = os.listdir(cwd)
+
+for item in list:
+    if os.path.isfile(os.path.join(cwd, item, 'SConscript')):
+        group = group + SConscript(os.path.join(item, 'SConscript'))
+
+Return('group')

@@ -1,0 +1,26 @@
+menu "Flash IAP"
+
+config COMPONENT_FLASHIAP
+    bool "Enable flash in application programming"
+    default y
+    help
+        Enable flash in application programming.
+
+if COMPONENT_FLASHIAP
+
+    config COMPONENT_FLASHIAP_ROM
+        bool "using ROM flash interface"
+        default y
+        help
+            Using ROM flash interface in default.
+
+    menu "Flash device parameters"
+        config COMPONENT_FLASHIAP_SIZE
+            int "flash size"
+            default 8388608
+
+    endmenu
+
+endif
+
+endmenu

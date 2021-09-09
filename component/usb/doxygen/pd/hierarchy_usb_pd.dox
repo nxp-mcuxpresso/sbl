@@ -1,0 +1,54 @@
+/*!
+@defgroup usb_pd_stack USB Type-C PD Stack
+*/
+
+/*!
+@addtogroup usb_pd_phy_drv USB PD PHY driver interface
+@{
+*/
+
+/*!
+@defgroup usb_pd_cmsis_wrapper USB PD CMSIS I2C/SPI driver wrapper
+@ingroup usb_pd_phy_drv
+*/
+
+/*!
+@defgroup usb_pd_phy_ptn5110 USB PD PHY PTN5110 driver
+@ingroup usb_pd_phy_drv
+*/
+
+/*!
+@addtogroup usb_pd_phy_drv
+@details The USB Type-C PD stack provide the same PHY interface for different PHY. The PHY driver need implement the interface functions.
+The same USB Type-C PD stack can adapter to different PHY.
+*/
+
+/*!
+@addtogroup usb_pd_cmsis_wrapper
+@details Provide the same API interface for I2C and SPI, user doesn't need distinguish I2C or SPI.
+*/
+
+/*!
+@addtogroup usb_pd_phy_ptn5110
+@details The PTN5110 driver implements the PD send/recive message function and connect/disconnect detection function through PTN5110 PHY.
+*/
+
+/*! @} */
+
+/*!
+@addtogroup appendix_chapter Appendix
+@{
+*/
+
+/*!
+@defgroup appendix_a Appendix.A
+@ingroup appendix_chapter
+*/
+
+/*!
+@defgroup appendix_b Appendix.B
+@ingroup appendix_chapter
+*/
+
+/*! @} */
+

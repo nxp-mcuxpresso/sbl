@@ -1,0 +1,70 @@
+/*!
+@addtogroup usb_device_cdc_drv
+@{
+@details The USB communications device class (or USB CDC) is a composite Universal Serial Bus device class. The class may include more than one interface, such as a custom control interface, data interface, audio, or mass storage-related interfaces.
+The MCUXpresso SDK USB stack provides support for CDC ACM, which is defined in CDC PSTN Subclass. In addition, the Microsoft<sup>®</sup> RNDIS is also implemented upon the CDC ACM driver.
+*/
+
+/*!
+@defgroup cdc_acm USB CDC ACM Class driver
+@{
+@ingroup cdc
+@details This section describes the programming interface of the USB CDC ACM class driver.
+The USB CDC ACM class driver handles the specific control requests for CDC ACM, transfers data packets to and from the host through the bulk pipe, as well as provides notification to host through the interrupt pipe.
+
+# USB CDC ACM Device structures {#USBCDCACMDevS}
+
+The driver uses an instantiation of the usb_device_cdc_acm_struct_t structure to
+maintain the current state of a particular USB CDC ACM instance module driver.
+This structure holds the USB device handle and keeps track of the configuration value, alternate setting, pipes and interfaces that are enumerated for this USB ACM device.
+
+The USB CDC ACM class driver populates the structure members.
+
+# USB CDC ACM Initialization {#USBCDCACMInit}
+
+The usb_device_cdc_acm_init is called from usb_device_class_init when it matches the class type of CDC with the one in configure structure passed from application. In this function it associates the configure structure with the USB CDC ACM device, resets the configuration value and creates mutex for each pipe.
+
+# USB CDC ACM Endpoint Initialization {#USBCDCACMEPInit}
+
+After the enumeration procedure is done, all the endpoints, other than the control endpoint, are initialized with their own attributes, for example, endpoint address, transfer type and maximum packet size. Most of the attributes can be drawn from the configure structure. Each endpoint is assigned a callback function to serve the corresponding event.
+
+# USB CDC ACM Event Handling {#USBCDCACMEV}
+
+The usb_device_cdc_acm_event is called from usb_device_class_event when there occurs a class-specific event and it matches the class type of CDC with the one in configure structure. For some events which need to notify the application, the callback function defined in application is invoked with the dedicated event type.
+
+# USB CDC ACM Send data{#USBCDCACMSEND}
+
+The usb_device_cdc_acm_send is called to send packet to host through the bulk pipe. Users need to specify the USB CDC ACM class handle, the endpoint address, the buffer address and the length of the buffer to prime a sending transfer. Note that the transfer is initiated by the host so this transfer is not accomplished until the kUsbDeviceCdcEventSendResponse event occurs.
+
+It allows only one transfer at a time, so the call to usb_device_cdc_acm_send returns kStatus_USB_Busy if the previous transfer is not done yet.
+
+# USB CDC ACM Receive data{#USBCDCACMRECV}
+
+The usb_device_cdc_acm_recv is called to receive packet from host through the bulk pipe. Users need to specify the USB CDC ACM class handle, the endpoint address, the buffer address and the length of the buffer to prime a receiving transfer. Note that the transfer is initiated by the host so this transfer is not accomplished until the kUsbDeviceCdcEventRecvResponse event occurs.
+
+It allows only one transfer at a time, so the call to usb_device_cdc_acm_send returns kStatus_USB_Busy if the previous transfer is not done yet.
+@} */
+/*!
+@defgroup cdc_rndis USB CDC RNDIS driver
+@{
+@ingroup cdc
+@details This section describes the programming interface of the USB CDC RNDIS driver.
+The USB CDC RNDIS driver implements the various control messages and data message defined by Microsoft RNDIS. The control messages is sent through the SEND_ENCAPSULATED_COMMAND and GET_ENCAPSULATED_COMMAND CDC class request.
+
+# USB CDC RNDIS Device structures {#RNDISDevS}
+
+The driver uses an instantiation of the usb_device_cdc_rndis_struct_t structure to
+maintain the current state of a particular CDC RNDIS instance module driver.
+
+The CDC RNDIS driver populates the structure members.
+
+# CDC RNDIS Initialization {#RNDISInit}
+
+The CDC RNDIS device is initialized with the configure structure of type usb_device_cdc_rndis_config_struct_t. It specifies the RNDIS request specific callback function and the maximum transmit size for device. Besides, the device state, hardware state and the media status is set to their initial value.
+
+# CDC RNDIS Control Message{#RNDISCtrl}
+
+The control messages is sent through the SEND_ENCAPSULATED_COMMAND and GET_ENCAPSULATED_COMMAND CDC class request. Take the RNDIS_INITIALIZE_MSG as an example, the host sends a SEND_ENCAPSULATED_COMMAND request which carries the message type of RNDIS_INITIALIZE_MSG to the device, then the device sends back a notification through interrupt pipe to indicate that the response is available. Next the host sends a GET_ENCAPSULATED_COMMAND request which carries the message type of RNDIS_INITIALIZE_CMPLT to the device to obtain the proper information.
+
+@} */
+/*! @} */

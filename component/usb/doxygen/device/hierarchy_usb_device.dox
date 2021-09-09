@@ -1,0 +1,113 @@
+/*!
+@addtogroup usb_device_class_driver USB Class driver
+@{
+*/
+
+/*!
+@defgroup usb_device_cdc_drv USB CDC Class driver
+
+*/
+
+/*!
+@defgroup usb_device_hid_drv USB HID Class driver
+
+
+*/
+
+/*!
+@addtogroup usb_device_msc_drv USB MSC Class driver
+@{
+*/
+
+/*!
+@defgroup usb_msc USB MSC driver
+*/
+
+/*!
+@defgroup msc_ufi USB MSC UFI driver
+
+*/
+
+/*! @} */
+
+/*!
+@defgroup usb_device_audio_drv USB AUDIO Class driver
+
+*/
+
+/*!
+@defgroup usb_device_phdc_drv USB PHDC Class driver
+
+*/
+
+/*!
+@defgroup usb_device_video_drv USB VIDEO Class driver
+
+*/
+
+/*!
+@defgroup usb_device_ccid_drv USB CCID Class driver
+
+*/
+
+/*!
+@defgroup usb_device_printer_drv USB PRINTER Class driver
+
+*/
+/*! @} */
+
+/*!
+@addtogroup usb_device_driver USB Device driver
+@details The USB device provides the device APIs to support the class driver and lite/non-lite application.
+It includes the USB controller driver only which consist of the common controller driver and xHCI driver.
+@{
+*/
+
+/*!
+@defgroup usb_device_controller_driver USB Device Controller driver
+@details The interface between KHCI/EHCI etc controller Driver and Common Controller driver.
+@{
+*/
+
+/*!
+@defgroup usb_device_controller_khci_driver USB Device Controller KHCI driver
+*/
+
+/*!
+@defgroup usb_device_controller_ehci_driver USB Device Controller EHCI driver
+*/
+
+/*!
+@defgroup usb_device_controller_lpcip3511_driver USB Device Controller LPC IP3511 driver
+*/
+
+/*! @} */
+
+/*!
+@defgroup usb_device_ch9 USB Device Spec Chapter 9 driver
+
+*/
+
+/*!
+@defgroup usb_device_configuration USB Device Configuration
+
+*/
+
+/*! @} */
+
+
+/*!
+@defgroup usb_os_abstraction USB OS Adapter
+@details The OS adapter (OSA) is used to hide the differences between RTOSes and enable a USB stack with the same code base and behavior.
+@note OSA should not be used in the USB application. Therefore, from the USB application viewpoint, OSA is invisible.
+
+*/
+
+
+/*!
+@defgroup usb_drv Definitions and structures
+@details This lists the common definitions and structures for the USB stack.
+@{
+*/
+
+/*! @} */

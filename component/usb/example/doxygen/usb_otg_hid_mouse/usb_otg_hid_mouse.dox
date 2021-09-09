@@ -1,0 +1,404 @@
+/*!
+@addtogroup otg_hid_example
+@{
+
+@defgroup otg_hid_mouse OTG HID mouse example
+@{
+
+# Overview
+
+This OTG HID example is a simple demonstration program based on the MCUXpresso SDK. 
+@n User can test the OTG functions by using the menu that is printed in the vcom.
+
+# System Requirement
+
+## Hardware requirements
+
+- Mini/micro USB cable
+- USB A to micro AB cable
+- Hardware (tower/base board, ...) for a specific device
+- Personal Computer(PC)
+
+
+## Software requirements
+
+- The project path is: 
+@n <MCUXpresso_SDK_Install>/boards/<board>/usb_examples/usb_otg_hid_mouse/<rtos>/<toolchain>.
+@note The <rtos> is Bare Metal or FreeRTOS OS.
+
+
+# Getting Started
+
+## Hardware Settings
+
+@note The jumpers of the hardware (tower system/base module) needs to be set to default setting at first.
+
+## Prepare the example 
+
+1.  Download the program to the target board.
+2.  Power off the target board and power on again.
+3.  Connect one board to another board.
+
+@note For detailed instructions, see the appropriate board User's Guide.
+@note Host hid example doesn't support HID report descriptor analysis, this example assume that the device data are sent by specific order. 
+      @n For more detail, please refer to the code. For the device list we tested,
+      @n please refer to chapter "Peripheral devices tested with the USB Host stack" in "SDK Release Notes xxxx(board name)".
+
+# Run the example
+1.  Use the menu to operate the OTG functions, the menu is different for different state, you can input 'p' to get the menu information.
+    The menu is as follow:
+    - The state is a_idle (A-device is idle):
+    @verbatim
+    1. bus request;
+    2. bus release (set bus request false);
+    3. set bus drop false;
+    4. set bus drop true.
+    @endverbatim
+
+    - The state is a_host (A-device works as host function):
+    @verbatim
+    2. bus release;
+    4. set bus drop true.
+    @endverbatim
+
+    - The state is a_peripheral (A-device works as device function):
+    @verbatim
+    1. bus request;
+    4. set bus drop true.
+    @endverbatim
+
+    - The state is b_idle (B-device is idle):
+    @verbatim
+    1. bus request (SRP).
+    @endverbatim
+
+    - The state is b_peripheral (B-device works as device function):
+    @verbatim
+    1. bus request (HNP).
+    @endverbatim
+
+    - The state is b_host (B-device works as host function):
+    @verbatim
+    2. bus release.
+    @endverbatim
+
+    - The state is a_vbus_err (A-device works as error state):
+    @verbatim
+    5. clear error.
+    @endverbatim
+
+2.  Connect the two boards UART to the PC and open the COM port in terminal tools.
+3.  You can do the following tests.
+- Test1: Plug OTG cable to one board, the board works as A-device; plug out the cable, the board works as B-device.
+- Test2: Plug one board to the PC. The PC recognizes it as an USB mouse device and the mouse moves around the screen.
+- Test3 (bus request test):
+    -# Plug OTG calbe to one board (board_1);
+    -# plug another board (board_2) to the board_1;
+    -# On the com port of the board_1, press "1" key to request bus; Or
+        On the com port of the board_2, press "1" key to request bus;
+    -# board_1 will work as host, board_2 work as device.
+@verbatim
+The logs are as follow if press "1" on the board_2.
+On the com port of the board_1 displays:
+        enter a_host
+        host init success
+        hid mouse attached:pid=0x7cvid=0x1fc9 address=1
+        mouse attached
+        set device HNP feature enable success
+                                          Right                
+                                          Right                
+                                          Right                
+                                          Right                
+                                          Right                
+                                          Right                
+                                          Right                
+                                          Right                
+                                          Right                
+                                          Right 
+                                          …………
+
+On the com port of the board_2 displays:
+        1. bus request (SRP)
+        enter b_srp_init
+        enter b_idle
+        device init success
+        enter b_peripheral
+@endverbatim
+- Test4 (SRP test):
+    -# Plug OTG calbe to one board (board_1);
+    -# plug another board (board_2) to the board_1;
+    -# reset board_2, Or
+       On the com port of the board_2, press "1" key to do SRP;
+    -# board_1 will work as host, board_2 work as device as follow:
+@verbatim
+On the com port of the board_1 displays:
+        enter a_host
+        host init success
+        hid mouse attached:pid=0x7cvid=0x1fc9 address=1
+        mouse attached
+        set device HNP feature enable success
+                                          Right                
+                                          Right                
+                                          Right                
+                                          Right                
+                                          Right                
+                                          Right                
+                                          Right                
+                                          Right                
+                                          Right                
+                                          Right 
+                                          …………
+
+On the com port of the board_2 displays (reset the board_2):
+        usb otg stack init done
+        enter b_idle
+        enter b_srp_init
+        enter b_idle
+        device init success
+        enter b_peripheral
+@endverbatim
+- Test5 (HNP test): 
+    -# Do as test3, test4 or other ways, make sure: board_1 work as A-device and host, board_2 work as B-device and peripheral;
+    -# On the com port of the board_2, press "1" key, the board_2 requests the bus and would like to become host,
+        the host and peripheral functions are swapped. board_1 now becomes peripheral and borad_2 becomes host;
+@verbatim
+On the com port of the board_2 displays
+        1. bus request (HNP)
+        device deinit success
+        enter b_wait_acon
+        enter b_host
+        host init success
+        hid mouse attached:pid=0x7cvid=0x1fc9 address=1
+        mouse attached
+                                          Right                
+                                          Right                
+                                          Right  
+On the com port of the board_1 displays
+        mouse detached
+        host deinit success
+        enter a_suspend
+        device init success
+        enter a_peripheral
+@endverbatim
+    -# On the com port of the board_2, press "2" key, the board_2 releases the bus and becomes peripheral and board_1 becomes host;
+@verbatim
+On the com port of the board_1 displays
+        device deinit success
+        enter a_wait_bcon
+        enter a_host
+        host init success
+        hid mouse attached:pid=0x7cvid=0x1fc9 address=1
+        mouse attached
+        set device HNP feature enable success
+                              Left                 
+                              Left                 
+                              Left                 
+                              Left                 
+                              Left                 
+                              Left     
+On the com port of the board_2 displays
+        2. bus release
+        mouse detached
+        host deinit success
+        device init success
+        enter b_peripheral
+@endverbatim
+    -# On the com port of the board_2, press "1" key, the host and peripheral functions are swapped as step 2;
+    -# On the com port of the board_1, press "1" key, the board_1 requests the bus and would like to become host, the host and device functions are swapped.
+@verbatim
+On the com port of the board_1 displays
+        1. bus request
+        device deinit success
+        enter a_wait_bcon
+        enter a_host
+        host init success
+        hid mouse attached:pid=0x7cvid=0x1fc9 address=1
+        mouse attached
+        set device HNP feature enable success
+                                                UP             
+                                                UP             
+                                                UP             
+                                                UP             
+                                                UP             
+                                                UP             
+                                                UP             
+                                                UP             
+                                                UP             
+On the com port of the board_2 displays
+        mouse detached
+        host deinit success
+        device init success
+        enter b_peripheral
+@endverbatim
+- Test6 (bus drop and bus request test):
+    -# Do as test3, test4 or other ways, make sure: board_1 work as A-device and host, board_2 work as B-device and peripheral;
+    -# On the com port of the board_1, press "4" key, vbus is dropped; board_1 becomes a_idle and board_2 becomes b_idle;
+@verbatim
+On the com port of the board_1 displays
+        4. set bus drop true
+        mouse detached
+        host deinit success
+        enter a_wait_vfall
+        enter a_idle
+        2. bus release (set bus request false)
+On the com port of the board_2 displays
+        device deinit success
+        enter b_idle
+@endverbatim
+    -# On the com port of the board_1, press "3" key, vbus is controlled by board_1; press "1" key, the board_1 requests the bus and would like to become host,
+        board_1 becomes a_host and board_2 becomes b_peripheral;
+@verbatim
+On the com port of the board_1 displays
+        3. set bus drop false
+        1. bus request
+        enter a_wait_vrise
+        enter a_wait_bcon
+        enter a_host
+        host init success
+        hid mouse attached:pid=0x7cvid=0x1fc9 address=1
+        mouse attached
+        set device HNP feature enable success
+                                          Right                
+                                          Right                
+                                          Right                
+                                          Right    
+On the com port of the board_2 displays
+        device init success
+        enter b_peripheral
+@endverbatim
+    -# On the com port of the board_1, press "2" key, the board_1 release the bus; board_1 becomes a_idle and board_2 become b_idle;
+@verbatim
+On the com port of the board_1 displays
+        2. bus release
+        mouse detached
+        host deinit success
+        enter a_suspend
+        enter a_wait_vfall
+        enter a_idle
+On the com port of the board_2 displays
+        device deinit success
+        enter b_idle
+@endverbatim
+    -# On the com port of the board_1, press "1" key, the board_1 request the bus; board_1 becomes a_host and board_2 become b_peripheral;
+@verbatim
+On the com port of the board_1 displays
+        1. bus request
+        enter a_wait_vrise
+        enter a_wait_bcon
+        enter a_host
+        host init success
+        hid mouse attached:pid=0x7cvid=0x1fc9 address=1
+        mouse attached
+        set device HNP feature enable success
+                                          Right                
+                                          Right                
+                                          Right                
+                                          Right                
+                                          Right                
+On the com port of the board_2 displays
+        device init success
+        enter b_peripheral
+@endverbatim
+    -# On the com port of the board_1, press "2" key, the board_1 release the bus; board_1 becomes a_idle and board_2 become b_idle. 
+        @nOn the com port of the board_2, press "1" key, the board_2 request a session; board_1 becomes a_host and board_2 become b_peripheral.
+@verbatim
+On the com port of the board_1 displays
+        2. bus release
+        mouse detached
+        host deinit success
+        enter a_suspend
+        enter a_wait_vfall
+        enter a_idle
+        enter a_wait_vrise
+        enter a_wait_bcon
+        enter a_host
+        host init success
+        hid mouse attached:pid=0x7cvid=0x1fc9 address=1
+        mouse attached
+        set device HNP feature enable success
+                                                Down           
+                                                Down           
+                                                Down           
+                                                Down           
+                                                Down           
+On the com port of the board_2 displays
+        device deinit success
+        enter b_idle
+        1. bus request (SRP)
+        enter b_srp_init
+        enter b_idle
+        device init success
+        enter b_peripheral
+@endverbatim
+- Test7 (hotplug test):
+    -# Do as test3, test4 or other ways, make sure: board_1 work as A-device and host, board_2 work as B-device and peripheral;
+    -# Unplug the usb cable at the board_2 side, wait until board_1 becomes a_idle and board_2 becomes b_idle;
+@verbatim
+On the com port of the board_1 displays
+                                                UP             
+                                                UP             
+                                                UP             
+        mouse detached
+        host deinit success
+        enter a_wait_bcon
+        enter a_wait_vfall
+        enter a_idle
+On the com port of the board_2 displays
+        device deinit success
+        enter b_idle
+@endverbatim
+    -# Plug the usb cable at board_2, on the com port of the board_2, press "1" key, the board_2 requests a session; board_1 becomes a_host and board_2 becomes b_peripheral;
+@verbatim
+        enter a_wait_vrise
+        enter a_wait_bcon
+        enter a_host
+        host init success
+        hid mouse attached:pid=0x7cvid=0x1fc9 address=1
+        mouse attached
+        set device HNP feature enable success
+                                                UP             
+                                                UP             
+                                                UP             
+                                                UP             
+                                                UP             
+                                                UP             
+                                                UP             
+On the com port of the board_2 displays
+        1. bus request (SRP)
+        enter b_srp_init
+        enter b_idle
+        device init success
+        enter b_peripheral
+@endverbatim
+    -# Unplug the USB cable at board_2 side, wait until board_1 becomes a_idle and board_2 becomes b_idle. Plug the USB calbe at board_2 side, on the com port of the board_1 press "1" key, the board_1 requests the bus; board_1 becomes a_host and board_2 becomes b_peripheral.
+@verbatim
+                                                UP             
+                                                UP             
+        mouse detached
+        host deinit success
+        enter a_wait_bcon
+        enter a_wait_vfall
+        enter a_idle
+        1. bus request
+        enter a_wait_vrise
+        enter a_wait_bcon
+        enter a_host
+        host init success
+        hid mouse attached:pid=0x7cvid=0x1fc9 address=1
+        mouse attached
+        set device HNP feature enable success
+                                                UP             
+                                                UP             
+                                                UP             
+                                          Right                
+                                          Right                
+                                          Right                
+On the com port of the board_2 displays
+        device deinit success
+        enter b_idle
+        device init success
+        enter b_peripheral
+@endverbatim
+
+@}
+@} */

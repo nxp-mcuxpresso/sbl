@@ -1,0 +1,2 @@
+source "$SBL_DIR/boot/Kconfig"
+source "$SBL_DIR/component/Kconfig"
