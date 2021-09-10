@@ -30,6 +30,8 @@
 #include "config-ecdsa.h"
 #elif defined(CONFIG_BOOT_SIGNATURE_TYPE_ED25519)
 #include "config-ed25519.h"
+#elif defined(CONFIG_BOOT_SIGNATURE_TYPE_ROM)
+#define MBEDTLS_SHA256_C
 #else
 #error "Cannot configure mbedTLS; signature type is unknown."
 #endif

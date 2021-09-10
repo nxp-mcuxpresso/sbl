@@ -12,12 +12,13 @@
 #include "bl_context.h"
 #endif
 
-#if defined(SOC_IMXRTYYYY_SERIES) && defined(CONFIG_BOOT_ENCRYPTED_XIP)
+#if defined(CONFIG_BOOT_ENCRYPTED_XIP)
 
 /* Assume that user encrypt SBL, copy new key inormation to second context,
  * or user should change the offset of key context
  */
-#if defined(SOC_IMXRT1170_SERIES) || defined(SOC_IMXRT1010_SERIES)
+#if defined(SOC_IMXRT1170_SERIES) || defined(SOC_IMXRT1010_SERIES) || \
+    defined(SOC_IMXRTXXX_SERIES)
 #define KEY_CONTEXT2_OFFSET_IN_SBL      (0x40u)
 #define KEY_CONTEXT_SIZE                (0x40u)
 #elif defined(SOC_IMXRT1060_SERIES) || defined(SOC_IMXRT1064_SERIES) || \
@@ -118,4 +119,4 @@ status_t update_key_context(uint32_t key_info_address)
 }
 #endif
 
-#endif //defined(SOC_IMXRTYYYY_SERIES) && defined(CONFIG_BOOT_ENCRYPTED_XIP)
+#endif //defined(CONFIG_BOOT_ENCRYPTED_XIP)

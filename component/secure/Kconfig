@@ -22,7 +22,6 @@ menu "secure"
 						bool "Select signature type ROM use"
 						help
 							Set signature type ROM use.
-                        depends on (SOC_IMXRTYYYY_SERIES || SOC_LPC55S69_SERIES)
 
 					config CONFIG_BOOT_SIGNATURE_TYPE_ECDSA_P256
 						bool "Select signature type ECDSA_P256"
@@ -46,13 +45,12 @@ menu "secure"
 				endif
 			endif
 
-    	    if SOC_IMXRTYYYY_SERIES
-                config CONFIG_BOOT_ENCRYPTED_XIP
-                    bool "Encrypted XIP function"
-                    default n
-    		        help
-        		        Use encrypted application image.
-            endif
+            config CONFIG_BOOT_ENCRYPTED_XIP
+                bool "Encrypted XIP function"
+                default n
+		        help
+    		        Use encrypted application image.
+            depends on (SOC_IMXRTYYYY_SERIES || SOC_IMXRTXXX_SERIES)
         endif
 
         config COMPONENT_MBEDTLS

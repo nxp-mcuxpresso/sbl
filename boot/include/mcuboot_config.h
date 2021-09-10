@@ -45,7 +45,7 @@
 /* Uncomment to enable BOOTROM signature */
 #ifdef CONFIG_BOOT_SIGNATURE_TYPE_ROM
 #define MCUBOOT_SIGN_ROM
-#ifdef SOC_LPC55S69_SERIES
+#if defined(SOC_LPC55S69_SERIES) || defined(SOC_IMXRTXXX_SERIES)
 #define HAB_IVT_OFFSET      0x0u
 #else
 #define HAB_IVT_OFFSET      0x1000u

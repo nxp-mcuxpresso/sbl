@@ -7,6 +7,8 @@
  */
 
 #include "fsl_iap.h"
+#include "fsl_iap_kbp.h"
+#include "fsl_iap_skboot_authenticate.h"
 
 /* Component ID definition, used by tools. */
 #ifndef FSL_COMPONENT_ID
@@ -52,6 +54,27 @@ typedef struct
 } ocotp_driver_t;
 
 /*!
+ * @name Bootloader API and image authentication Structure
+ * @{
+ */
+
+/*! @brief Interface for Bootloader API functions. */
+typedef struct _kb_interface
+{
+    /*!< Initialize the API. */
+    status_t (*kb_init_function)(kb_session_ref_t **session, const kb_options_t *options);
+    status_t (*kb_deinit_function)(kb_session_ref_t *session);
+    status_t (*kb_execute_function)(kb_session_ref_t *session, const uint8_t *data, uint32_t dataLength);
+} kb_interface_t;
+
+/*! @brief Interface for image authentication API */
+typedef struct _skboot_authenticate_interface
+{
+    skboot_status_t (*skboot_authenticate_function)(const uint8_t *imageStartAddr, secure_bool_t *isSignVerified);
+    void (*skboot_hashcrypt_irq_handler)(void);
+} skboot_authenticate_interface_t;
+
+/*!
  * @brief Root of the bootloader API tree.
  *
  * An instance of this struct resides in read-only memory in the bootloader. It
@@ -65,12 +88,12 @@ typedef struct BootloaderTree
     uint32_t version;                 /*!< Bootloader version number. */
     const char *copyright;            /*!< Copyright string. */
     const uint32_t reserved0;
-    const uint32_t reserved1;
+    const kb_interface_t *kbApi;      /*!< Bootloader API. */
     const uint32_t reserved2;
     const uint32_t reserved3;
     const flexspi_nor_flash_driver_t *flexspiNorDriver; /*!< FlexSPI NOR FLASH Driver API. */
     const ocotp_driver_t *otpDriver;                    /*!< OTP driver API. */
-    const uint32_t reserved4;
+    const skboot_authenticate_interface_t *skbootAuthenticate; /*!< Image authentication API. */
 } bootloader_tree_t;
 
 /*******************************************************************************
@@ -216,4 +239,80 @@ status_t IAP_OtpShadowRegisterReload(void)
 status_t IAP_OtpCrcCheck(uint32_t start_addr, uint32_t end_addr, uint32_t crc_addr)
 {
     return OTP_API_TREE->crc_check(start_addr, end_addr, crc_addr);
+}
+
+/********************************************************************************
+ * Bootloader API
+ *******************************************************************************/
+/*!
+ * @brief Initialize ROM API for a given operation.
+ *
+ * Inits the ROM API based on the options provided by the application in the second
+ * argument. Every call to rom_init() should be paired with a call to rom_deinit().
+ */
+status_t kb_init(kb_session_ref_t **session, const kb_options_t *options)
+{
+    assert(BOOTLOADER_API_TREE_POINTER);
+    return BOOTLOADER_API_TREE_POINTER->kbApi->kb_init_function(session, options);
+}
+
+/*!
+ * @brief Cleans up the ROM API context.
+ *
+ * After this call, the @a context parameter can be reused for another operation
+ * by calling rom_init() again.
+ */
+status_t kb_deinit(kb_session_ref_t *session)
+{
+    assert(BOOTLOADER_API_TREE_POINTER);
+    return BOOTLOADER_API_TREE_POINTER->kbApi->kb_deinit_function(session);
+}
+
+/*!
+ * Perform the operation configured during init.
+ *
+ * This application must call this API repeatedly, passing in sequential chunks of
+ * data from the boot image (SB file) that is to be processed. The ROM will perform
+ * the selected operation on this data and return. The application may call this
+ * function with as much or as little data as it wishes, which can be used to select
+ * the granularity of time given to the application in between executing the operation.
+ *
+ * @param context Current ROM context pointer.
+ * @param data Buffer of boot image data provided to the ROM by the application.
+ * @param dataLength Length in bytes of the data in the buffer provided to the ROM.
+ *
+ * @retval #kStatus_Success The operation has completed successfully.
+ * @retval #kStatus_Fail An error occurred while executing the operation.
+ * @retval #kStatus_RomApiNeedMoreData No error occurred, but the ROM needs more data to
+ *     continue processing the boot image.
+ */
+status_t kb_execute(kb_session_ref_t *session, const uint8_t *data, uint32_t dataLength)
+{
+    assert(BOOTLOADER_API_TREE_POINTER);
+    return BOOTLOADER_API_TREE_POINTER->kbApi->kb_execute_function(session, data, dataLength);
+}
+
+/********************************************************************************
+ * Image authentication API
+ *******************************************************************************/
+
+/*!
+ * @brief Authenticate entry function with ARENA allocator init
+ *
+ * This is called by ROM boot or by ROM API g_skbootAuthenticateInterface
+ */
+skboot_status_t skboot_authenticate(const uint8_t *imageStartAddr, secure_bool_t *isSignVerified)
+{
+    assert(BOOTLOADER_API_TREE_POINTER);
+    return BOOTLOADER_API_TREE_POINTER->skbootAuthenticate->skboot_authenticate_function(imageStartAddr,
+                                                                                         isSignVerified);
+}
+
+/*!
+ * @brief Interface for image authentication API
+ */
+void HASH_IRQHandler(void)
+{
+    assert(BOOTLOADER_API_TREE_POINTER);
+    BOOTLOADER_API_TREE_POINTER->skbootAuthenticate->skboot_hashcrypt_irq_handler();
 }

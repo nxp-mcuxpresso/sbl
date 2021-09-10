@@ -11,6 +11,8 @@ CPPPATH = [cwd]
 if GetDepend(['CONFIG_BOOT_SIGNATURE_TYPE_ROM']):
     if GetDepend(['SOC_LPC55S69_SERIES']):
     	src += ['./image_lpc55xx.c']
+    if GetDepend(['SOC_IMXRTXXX_SERIES']):
+    	src += ['./image_rtxxx.c']
     if GetDepend(['SOC_IMXRTYYYY_SERIES']):
         src += ['./hab.c']
         src += ['./hab_rvt.c']
