@@ -64,10 +64,15 @@
 
 #define  m_boot_flash_conf_start       0x08000400
 
+#if (defined(BOOT_HEADER_ENABLE) && (BOOT_HEADER_ENABLE == 1))
 LR_m_interrupts m_boot_flash_conf_start m_interrupts_size+m_text_size {
   FLASH_CONFIG m_boot_flash_conf_start m_interrupts_start-m_boot_flash_conf_start { ; load address = execution address
     * (.flash_conf)
   }
+#else 
+LR_m_interrupts m_interrupts_start m_interrupts_size+m_text_size {
+#endif
+  
   VECTOR_ROM m_interrupts_start FIXED m_interrupts_size { ; load address = execution address
     * (.isr_vector,+FIRST)
   }

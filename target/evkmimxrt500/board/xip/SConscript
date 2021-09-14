@@ -12,6 +12,7 @@ if GetDepend('BOARD_FLASH_SUPPORT'):
         LINKFLAGS  = ' --remove'
         LINKFLAGS += ' --keep=*(CodeQuickAccess)'
         LINKFLAGS += ' --keep=*(.flash_conf)' 
+        LINKFLAGS += ' --predefine="-DBOOT_HEADER_ENABLE=1"'
     else:
         LINKFLAGS = ''
 
