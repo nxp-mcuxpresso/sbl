@@ -95,6 +95,7 @@ def IARProject(target, script):
 
     CPPPATH = []
     CPPDEFINES = []
+    LINKDEFINES = []
     LINKFLAGS = ''
     CCFLAGS = ''
     Libs = []
@@ -122,6 +123,10 @@ def IARProject(target, script):
         # get each group's definitions
         if 'CPPDEFINES' in group and group['CPPDEFINES']:
             CPPDEFINES += group['CPPDEFINES']
+
+        # get each group's linker definitions
+        if 'LINKDEFINES' in group and group['LINKDEFINES']:
+            LINKDEFINES += group['LINKDEFINES']
 
         # get each group's link flags
         if 'LINKFLAGS' in group and group['LINKFLAGS']:
@@ -159,6 +164,11 @@ def IARProject(target, script):
 
         if name.text == 'CCDefines':
             for define in CPPDEFINES:
+                state = SubElement(option, 'state')
+                state.text = define
+
+        if name.text == 'IlinkConfigDefines':
+            for define in LINKDEFINES:
                 state = SubElement(option, 'state')
                 state.text = define
 

@@ -37,10 +37,12 @@ define symbol m_data_end               = 0x2001FFFF;
 define symbol m_data2_start            = 0x20200000;
 define symbol m_data2_end              = 0x2023FFFF;
 
+if (XIP_BOOT_HEADER_ENABLE == 1) {
 define exported symbol m_boot_hdr_conf_start = 0x60000000;
 define symbol m_boot_hdr_ivt_start           = 0x60001000;
 define symbol m_boot_hdr_boot_data_start     = 0x60001020;
 define symbol m_boot_hdr_dcd_data_start      = 0x60001030;
+}
 
 /* Sizes */
 if (isdefinedsymbol(__stack_size__)) {
@@ -90,12 +92,14 @@ do not initialize  { section .noinit };
 
 place at address mem: m_interrupts_start    { readonly section .intvec };
 
+if (XIP_BOOT_HEADER_ENABLE == 1) {
 place at address mem:m_boot_hdr_conf_start { section .boot_hdr.conf };
 place at address mem:m_boot_hdr_ivt_start { section .boot_hdr.ivt };
 place at address mem:m_boot_hdr_boot_data_start { readonly section .boot_hdr.boot_data };
 place at address mem:m_boot_hdr_dcd_data_start { readonly section .boot_hdr.dcd_data };
 
 keep{ section .boot_hdr.conf, section .boot_hdr.ivt, section .boot_hdr.boot_data, section .boot_hdr.dcd_data };
+}
 
 place in TEXT_region                        { readonly };
 place in DATA_region                        { block RW };
