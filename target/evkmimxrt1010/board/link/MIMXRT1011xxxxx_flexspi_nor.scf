@@ -55,25 +55,24 @@
   #define Heap_Size                    0x2000
 #endif
 
-LR_m_rom_config m_flash_config_start m_flash_config_size {   ; load region size_region
-	RW_m_config_text m_flash_config_start m_flash_config_size { ; load address = execution address
-	* (.boot_hdr.conf, +FIRST)
-	}
-}
+#if defined(XIP_BOOT_HEADER_ENABLE) && (XIP_BOOT_HEADER_ENABLE == 1)
+LR_m_text m_flash_config_start m_text_start+m_text_size-m_flash_config_start {   ; load region size_region
+  RW_m_config_text m_flash_config_start FIXED m_flash_config_size { ; load address = execution address
+    * (.boot_hdr.conf, +FIRST)
+  }
 
-LR_m_rom_ivt m_ivt_start m_ivt_size {   ; load region size_region
-	RW_m_ivt_text m_ivt_start m_ivt_size { ; load address = execution address
-	* (.boot_hdr.ivt, +FIRST)
-	* (.boot_hdr.boot_data)
-	* (.boot_hdr.dcd_data)
-	}
-}
-
-LR_m_text m_interrupts_start m_text_start+m_text_size-m_interrupts_size {   ; load region size_region
-  VECTOR_ROM m_interrupts_start m_interrupts_size { ; load address = execution address
+  RW_m_ivt_text m_ivt_start FIXED m_ivt_size { ; load address = execution address
+    * (.boot_hdr.ivt, +FIRST)
+    * (.boot_hdr.boot_data)
+    * (.boot_hdr.dcd_data)
+  }
+#else
+LR_m_text m_interrupts_start m_text_start+m_text_size-m_interrupts_start {   ; load region size_region
+#endif
+  VECTOR_ROM m_interrupts_start FIXED m_interrupts_size { ; load address = execution address
     * (.isr_vector,+FIRST)
   }
-  ER_m_text m_text_start m_text_size { ; load address = execution address
+  ER_m_text m_text_start FIXED m_text_size { ; load address = execution address
     * (InRoot$$Sections)
     .ANY (+RO)
   }
