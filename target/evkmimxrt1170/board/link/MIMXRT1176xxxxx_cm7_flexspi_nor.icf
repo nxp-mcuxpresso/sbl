@@ -56,10 +56,12 @@ if (isdefinedsymbol(__use_shmem__)) {
   define exported symbol __NCACHE_REGION_SIZE    = 0x0;
 }
 
+if (XIP_BOOT_HEADER_ENABLE == 1) {
 define exported symbol m_boot_hdr_conf_start = 0x30000400;
 define symbol m_boot_hdr_ivt_start           = 0x30001000;
 define symbol m_boot_hdr_boot_data_start     = 0x30001020;
 define symbol m_boot_hdr_dcd_data_start      = 0x30001030;
+}
 
 define exported symbol core1_image_start     = 0x30FC0000;
 define exported symbol core1_image_end       = 0x30FFFFFF;
@@ -119,12 +121,14 @@ if (isdefinedsymbol(__use_shmem__)) {
 
 place at address mem: m_interrupts_start    { readonly section .intvec };
 
+if (XIP_BOOT_HEADER_ENABLE == 1) {
 place at address mem:m_boot_hdr_conf_start { section .boot_hdr.conf };
 place at address mem:m_boot_hdr_ivt_start { section .boot_hdr.ivt };
 place at address mem:m_boot_hdr_boot_data_start { readonly section .boot_hdr.boot_data };
 place at address mem:m_boot_hdr_dcd_data_start { readonly section .boot_hdr.dcd_data };
 
 keep{ section .boot_hdr.conf, section .boot_hdr.ivt, section .boot_hdr.boot_data, section .boot_hdr.dcd_data };
+}
 
 place in TEXT_region                        { readonly };
 place in DATA_region                        { block RW };
