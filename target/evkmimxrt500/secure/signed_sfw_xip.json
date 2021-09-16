@@ -1,0 +1,25 @@
+{
+    "family": "rt5xx",
+    "inputImageFile": "./sfw.bin",
+    "imageLinkAddress": "0x08101000",
+    "imageLinkAdressFromImage": false,
+    "outputImageExecutionTarget": "External flash (XIP)",
+    "outputImageAuthenticationType": "Signed",
+    "enableTrustZone": true,
+    "trustZonePresetFile": "",
+    "enableHwUserModeKeys": false,
+    "imageBuildNumber": "0x01",
+    "rootCertificate0File": "./crts/ROT1_sha256_2048_65537_v3_ca_crt.der",
+    "rootCertificate1File": "./crts/ROT2_sha256_2048_65537_v3_ca_crt.der",
+    "rootCertificate2File": "./crts/ROT3_sha256_2048_65537_v3_ca_crt.der",
+    "rootCertificate3File": "./crts/ROT4_sha256_2048_65537_v3_ca_crt.der",
+    "mainCertChainId": 0,
+    "mainCertPrivateKeyFile": "./keys/IMG1_1_sha256_2048_65537_v3_usr_key.pem",
+    "masterBootOutputFile": "sfw_1_signed.bin"
+    "deviceKeySource": "OTP",
+    "useKeyStore": false,
+    "keyStoreFile": "",
+    "outputImageEncryptionKeyFile": ,
+    "chainCertificate0File0": "./crts/ROT1_sha256_2048_65537_v3_ca_crt.der",
+    "chainCertificate0File1": "./crts/IMG1_1_sha256_2048_65537_v3_usr_crt.der"
+}
