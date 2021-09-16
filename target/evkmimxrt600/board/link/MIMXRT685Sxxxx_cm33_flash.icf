@@ -60,7 +60,9 @@ define symbol m_data_end                       = 0x201FFFFF;
 define symbol m_usb_sram_start                 = 0x40140000;
 define symbol m_usb_sram_end                   = 0x40143FFF;
 
+if (BOOT_HEADER_ENABLE == 1) {
 define symbol m_boot_flash_conf_start          = 0x08000400;
+}
 
 define exported symbol __VECTOR_TABLE          = m_interrupts_start;
 define exported symbol __VECTOR_RAM            = isdefinedsymbol(__ram_vector_table__) ? m_interrupts_ram_start : m_interrupts_start;
@@ -99,8 +101,11 @@ initialize by copy {
 
 do not initialize  { section .noinit, section m_usb_bdt, section m_usb_global  };
 
+if (BOOT_HEADER_ENABLE == 1) {
 keep{section .flash_conf };
 place at address mem: m_boot_flash_conf_start    { readonly section .flash_conf };
+}
+
 place at address mem: m_interrupts_start    { readonly section .intvec };
 place in TEXT_region                        { block RO };
 place in m_interrupts_ram_region            { section m_interrupts_ram };
