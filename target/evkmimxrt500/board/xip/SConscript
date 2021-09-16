@@ -12,12 +12,18 @@ if GetDepend('BOARD_FLASH_SUPPORT'):
     if sblprofile.CROSS_TOOL == 'keil':
         LINKFLAGS  = ' --remove'
         LINKFLAGS += ' --keep=*(CodeQuickAccess)'
-        LINKFLAGS += ' --keep=*(.flash_conf)' 
-        LINKFLAGS += ' --predefine="-DBOOT_HEADER_ENABLE=1"'
+        if GetDepend(['ROM_VERIFY_SBL']):
+            LINKFLAGS += ' --predefine="-DBOOT_HEADER_ENABLE=0"'
+        else:
+            LINKFLAGS += ' --keep=*(.flash_conf)' 
+            LINKFLAGS += ' --predefine="-DBOOT_HEADER_ENABLE=1"'
         LINKDEFINES = []
     # Add linker defines for IAR
     elif sblprofile.CROSS_TOOL == 'iar':
-        LINKDEFINES = ['BOOT_HEADER_ENABLE=1']
+        if GetDepend(['ROM_VERIFY_SBL']):
+            LINKDEFINES = ['BOOT_HEADER_ENABLE=0']
+        else:
+            LINKDEFINES = ['BOOT_HEADER_ENABLE=1']
         LINKFLAGS = ''
     elif sblprofile.CROSS_TOOL == 'gcc':
         LINKFLAGS = ''
