@@ -1,5 +1,13 @@
 menu "MCU SBL core"
 
+if !SOC_LPC55S69_SERIES
+    config ROM_VERIFY_SBL
+        bool "Enable ROM to verify sbl"
+        default n
+        help
+            If enabled, the sbl image can be verified by ROM.
+endif
+
 config CONFIG_MCUBOOT_MAX_IMG_SECTORS
     int "Maximum number of flash sectors per image"
     default 400
