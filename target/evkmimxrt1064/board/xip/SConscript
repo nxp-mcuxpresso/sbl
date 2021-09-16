@@ -10,11 +10,17 @@ if GetDepend('BOARD_FLASH_SUPPORT'):
 
     # Add linker defines for keil
     if sblprofile.CROSS_TOOL == 'keil':
-        LINKFLAGS = '--predefine="-DXIP_BOOT_HEADER_ENABLE=1"'
+        if GetDepend(['ROM_VERIFY_SBL']):
+            LINKFLAGS = '--predefine="-DXIP_BOOT_HEADER_ENABLE=0"'
+        else:
+            LINKFLAGS = '--predefine="-DXIP_BOOT_HEADER_ENABLE=1"'
         LINKDEFINES = []
     # Add linker defines for iar
     elif sblprofile.CROSS_TOOL == 'iar':
-        LINKDEFINES = ['XIP_BOOT_HEADER_ENABLE=1']
+        if GetDepend(['ROM_VERIFY_SBL']):
+            LINKDEFINES = ['XIP_BOOT_HEADER_ENABLE=0']
+        else:
+            LINKDEFINES = ['XIP_BOOT_HEADER_ENABLE=1']
         LINKFLAGS = ''
     elif sblprofile.CROSS_TOOL == 'gcc':
         LINKFLAGS = ''
