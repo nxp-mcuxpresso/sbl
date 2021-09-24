@@ -50,7 +50,7 @@ section (0) {
     enable flexspinor 0x3000;
 
     #5. Program image
-    load myBinFile > kAbsAddr_Ivt;
+    load myBinFile > 0x60000400;
 
     #6. Program BEE_KEY0_SEL and BEE_KEY1_SEL, enable SW_GP2 as BEE key
     # load fuse 0x0000f000 > 0x06;
