@@ -53,9 +53,6 @@ if %signing_type% == HAB (
     :: Add mcuboot header
     python %imgtool_path%\imgtool.py create --align 4  --version "1.1"  --header-size %mcu_header_size% --pad-header --slot-size 0x100000 --key-info .\ehdr1.bin .\sfw_2_enc.bin .\sfw_2_signed.bin
 
-    :: Merge mcuboot header and tlvs into encrypted image 
-    python img_helper.py merge --header-size %mcu_header_size% --sign-image .\sfw_2_sign.bin --enc-image .\sfw_2_enc.bin
-
     del sfw_2_enc.bin
     rename "sfw_2_signed.bin" "sfw_2_enc.bin" 
 
