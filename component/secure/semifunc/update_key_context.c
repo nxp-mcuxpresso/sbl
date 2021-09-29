@@ -27,55 +27,6 @@
 #define KEY_CONTEXT_SIZE                (0x180u)
 #endif
 
-#if defined(COMPONENT_MCU_ISP)
-status_t update_key_context(uint32_t key_info_address)
-{
-    status_t status = kStatus_Fail;
-    uint32_t key_info[KEY_CONTEXT_SIZE/4];
-    uint8_t *tmpbuf;
-
-    tmpbuf = malloc(FLASH_CONFIG_SECTORSIZE);
-    if (!tmpbuf) {
-        return kStatus_Fail;
-    }
-
-    do {
-        status = g_bootloaderContext.memoryInterface->read(BOOT_FLASH_BASE, FLASH_CONFIG_SECTORSIZE, tmpbuf, kGroup_External);
-        if (status != kStatus_Success) {
-            break;
-        }
-
-        /* Assume that user encrypt SBL, copy new key inormation to second context,
-         * or user should use the real destination address
-         */
-        status = g_bootloaderContext.memoryInterface->read(key_info_address, KEY_CONTEXT_SIZE, (uint8_t *)key_info, kGroup_External);
-        if (status != kStatus_Success) {
-            break;
-        }
-        memcpy(tmpbuf + KEY_CONTEXT2_OFFSET_IN_SBL, key_info, KEY_CONTEXT_SIZE);
-
-        status = g_bootloaderContext.memoryInterface->erase(BOOT_FLASH_BASE, FLASH_CONFIG_SECTORSIZE, kGroup_External);
-        if (status != kStatus_Success) {
-            break;
-        }
-
-        status = g_bootloaderContext.memoryInterface->write(BOOT_FLASH_BASE, FLASH_CONFIG_SECTORSIZE, tmpbuf, kGroup_External);
-        if (status != kStatus_Success) {
-            break;
-        }
-        
-        status = g_bootloaderContext.memoryInterface->flush();
-        if (status != kStatus_Success) {
-            break;
-        }
-
-    } while (0);
-
-    free(tmpbuf);
-    
-    return status;
-}
-#else
 status_t update_key_context(uint32_t key_info_address)
 {
     status_t status = kStatus_Fail;
@@ -117,6 +68,5 @@ status_t update_key_context(uint32_t key_info_address)
     
     return status;
 }
-#endif
 
 #endif //defined(CONFIG_BOOT_ENCRYPTED_XIP)

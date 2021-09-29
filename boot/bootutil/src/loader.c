@@ -1844,18 +1844,23 @@ context_boot_go(struct boot_loader_state *state, struct boot_rsp *rsp)
              * secondary slot, was updated to primary slot.
              */
         }
-#if defined(SOC_IMXRTYYYY_SERIES) && defined(CONFIG_BOOT_ENCRYPTED_XIP)
-        if (BOOT_SWAP_TYPE(state) == BOOT_SWAP_TYPE_TEST) {
-            update_key_context(FLASH_AREA_IMAGE_2_OFFSET + KEY_CONTEXT_OFFSET_IN_APP);
-        } else if (BOOT_SWAP_TYPE(state) == BOOT_SWAP_TYPE_REVERT) {
-            // original image has been in slot1, revert the key block
-            update_key_context(FLASH_AREA_IMAGE_1_OFFSET + KEY_CONTEXT_OFFSET_IN_APP);
+				
+        rc = boot_read_image_headers(state, false, &bs);
+        if (rc != 0) {
+                goto out;
         }
-#endif
 
 #ifdef MCUBOOT_VALIDATE_PRIMARY_SLOT
         FIH_CALL(boot_validate_slot, fih_rc, state, BOOT_PRIMARY_SLOT, NULL);
         if (fih_not_eq(fih_rc, FIH_SUCCESS)) {
+#if defined(SOC_IMXRTYYYY_SERIES) && defined(CONFIG_BOOT_ENCRYPTED_XIP)
+            if (BOOT_SWAP_TYPE(state) == BOOT_SWAP_TYPE_TEST) {
+                update_key_context(FLASH_AREA_IMAGE_2_OFFSET + KEY_CONTEXT_OFFSET_IN_APP);
+            } else if (BOOT_SWAP_TYPE(state) == BOOT_SWAP_TYPE_REVERT) {
+                // original image has been in slot1, revert the key block
+                goto out;
+            }
+#endif
             NVIC_SystemReset();
             //goto out;
         }
@@ -2801,6 +2806,10 @@ int boot_remap_go(struct boot_rsp *rsp)
                     update_key_context(FLASH_AREA_IMAGE_2_OFFSET + KEY_CONTEXT_OFFSET_IN_APP);
                 }
 #endif
+                if (remap_type == BOOT_REMAP_TYPE_TEST)
+                {
+                        NVIC_SystemReset();
+                }
                 goto out;
             }
 #endif
@@ -2826,6 +2835,10 @@ int boot_remap_go(struct boot_rsp *rsp)
 #endif
                 SBL_EnableRemap(BOOT_FLASH_ACT_APP, BOOT_FLASH_ACT_APP+FLASH_AREA_IMAGE_1_SIZE, FLASH_AREA_IMAGE_1_SIZE);
                 boot_set_remap_flag(FLASH_AREA_IMAGE_PRIMARY(0));
+                if (remap_type == BOOT_REMAP_TYPE_TEST)
+                {
+                        NVIC_SystemReset();
+                }
                 goto out;
             }  
 #endif
