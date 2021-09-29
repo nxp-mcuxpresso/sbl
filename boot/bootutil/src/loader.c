@@ -2789,7 +2789,7 @@ int boot_remap_go(struct boot_rsp *rsp)
                 rc = BOOT_EBADIMAGE;
                 SBL_DisableRemap();
                 boot_set_remap_flag(FLASH_AREA_IMAGE_SECONDARY(0));
-#if defined(SOC_IMXRTYYYY_SERIES) && defined(CONFIG_BOOT_ENCRYPTED_XIP)
+#if defined(CONFIG_BOOT_ENCRYPTED_XIP)
                 if (remap_type == BOOT_REMAP_TYPE_TEST) {
                     /* Update new image failed, original image is in slot1, restore the key block
                      */
@@ -2813,7 +2813,7 @@ int boot_remap_go(struct boot_rsp *rsp)
             FIH_CALL(boot_validate_slot, fih_rc, &boot_data, BOOT_PRIMARY_SLOT, NULL);
             if (fih_not_eq(fih_rc, FIH_SUCCESS)) {
                 rc = BOOT_EBADIMAGE;
-#if defined(SOC_IMXRTYYYY_SERIES) && defined(CONFIG_BOOT_ENCRYPTED_XIP)
+#if defined(CONFIG_BOOT_ENCRYPTED_XIP)
                 if (remap_type == BOOT_REMAP_TYPE_TEST) {
                     update_key_context(FLASH_AREA_IMAGE_2_OFFSET + KEY_CONTEXT_OFFSET_IN_APP);
                 } else if (remap_type == BOOT_REMAP_TYPE_REVERT) {
