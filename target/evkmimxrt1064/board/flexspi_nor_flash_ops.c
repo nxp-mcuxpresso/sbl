@@ -252,7 +252,7 @@ static status_t flexspi_nor_flash_page_program(FLEXSPI_Type *base, uint32_t dstA
     flashXfer.SeqNumber     = 1;
     flashXfer.seqIndex      = NOR_CMD_LUT_SEQ_IDX_PAGEPROGRAM_QUAD;
     flashXfer.data          = (uint32_t *)src;
-    flashXfer.dataSize      = FLASH_PAGE_SIZE;
+    flashXfer.dataSize      = len;
     status                  = FLEXSPI_TransferBlocking(base, &flashXfer);
 
     if (status != kStatus_Success)
