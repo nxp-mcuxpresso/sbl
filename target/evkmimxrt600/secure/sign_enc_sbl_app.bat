@@ -114,7 +114,7 @@ blhost  -p %com_port% -t 15000 -- get-property 1
 blhost  -p %com_port% -t 15000 -- fill-memory 0x1c000 4 0xC1503057
 blhost  -p %com_port% -t 15000 -- fill-memory 0x1c004 4 0x20000014
 blhost  -p %com_port% -t 15000 -- configure-memory 0x9 0x1c000
-blhost  -p %com_port% -t 15000 -- flash-erase-region 0x08000000 0x10000
+blhost  -p %com_port% -t 15000 -- flash-erase-region 0x08000000 0x30000
 blhost  -p %com_port% -t 15000 -- fill-memory 0x1d000 4 0xf000000f
 blhost  -p %com_port% -t 15000 -- configure-memory 0x9 0x1d000
 
