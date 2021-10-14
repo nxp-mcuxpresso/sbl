@@ -30,10 +30,6 @@
 #define BOOT_FLASH_CAND_APP 0x08200000
 #define BOOT_FLASH_CUSTOMER 0x083f0000
 
-/* MCU SBL metadata header */
-
-#define BOOT_METADATA
-
 /* MCU SBL Component */
 
 /* Flash IAP */

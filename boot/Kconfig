@@ -53,13 +53,4 @@ config BOOT_FLASH_CUSTOMER
         The customer space start address.
 endmenu
 
-menu "MCU SBL metadata header"
-
-    config BOOT_METADATA
-        bool "Enable metadata header configuration"
-        default y
-        help
-            Customize the metadata header.
-endmenu
-
 endmenu
