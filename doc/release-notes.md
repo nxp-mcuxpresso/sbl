@@ -1,5 +1,14 @@
 # MCU-OTA SBL Release Notes
 
+## --- Version 1.1.0
+
+### What's new
+- Add the security function for evkmimxrt500 and evkmimxrt600
+- evkmimxrtxxx:
+  * Soc sign-verify: ROM RSA(2048,3072,4096)
+  * Soc encrypted XIP boot: Yes
+- Optimize the revert flow
+
 ## --- Version 1.0
 
 ### What's new
