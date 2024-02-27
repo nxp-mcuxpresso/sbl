@@ -1,5 +1,7 @@
 # MCU-OTA SBL Project
 
+**Note:** This project is not under active development now. For actively maintained examples of second stage bootloader based on MCUBoot see the latest release of [MCUXpresso SDK](https://www.nxp.com/design/design-center/software/development-software/mcuxpresso-software-and-tools-/mcuxpresso-software-development-kit-sdk:MCUXpresso-SDK).
+
 ## 1. SBL Introduction
 
 - Secure Bootloader(SBL) project is used for secure OTA.  
