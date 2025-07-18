@@ -14,6 +14,7 @@
 typedef void (*hab_image_entry_f)(void);
 typedef hab_state_t (* hab_loader_callback_f)(void **start, size_t *bytes, const void *boot_data);
 
+void HAB_RVT_Init(void);
 hab_status_t hab_Entry(void);
 uint32_t hab_Get_version(void);
 hab_image_entry_f hab_Authenticate_image(uint8_t cid, uint32_t ivt_offset, uint32_t start, size_t bytes);

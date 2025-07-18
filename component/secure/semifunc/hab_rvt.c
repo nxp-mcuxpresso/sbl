@@ -10,6 +10,7 @@
 #include "hab_rvt.h"
 
 #if defined(SOC_IMXRT1170_SERIES)
+#include "fsl_romapi.h"
 #define HABRVT_API_TREE_ADDR (0x00211C0C)
 #elif defined(SOC_IMXRT1010_SERIES)
 #define HABRVT_API_TREE_ADDR (0x002001E0)
@@ -50,42 +51,54 @@ typedef struct HABRVT
     hab_state_t (* authenticate_container)(uint8_t cid, ptrdiff_t ivt_offset, void **start, size_t *bytes, hab_loader_callback_f loader, uint32_t srkmask, int skip_dcd);
 } hab_rvt_t;
 
+static hab_rvt_t *g_habrvtTree = (hab_rvt_t *)HABRVT_API_TREE_ADDR;
+
+#if defined(SOC_IMXRT1170_SERIES)
+void HAB_RVT_Init(void)
+{
+    if (ANADIG_MISC->MISC_DIFPROG == 0x001170C0U)
+    {
+        g_habrvtTree = ((hab_rvt_t *)0x00211C14u);
+    }
+}
+#endif
+
 hab_status_t hab_Entry(void)
 {
-  return HABRVT_API_TREE_POINTER->entry();
+  return g_habrvtTree->entry();
 }
 
 uint32_t hab_Get_version(void)
 {
-  return HABRVT_API_TREE_POINTER->get_vertion();
+  return g_habrvtTree->get_vertion();
 }
 
 hab_image_entry_f hab_Authenticate_image(uint8_t cid, uint32_t ivt_offset, uint32_t start, size_t bytes)
 {
-  return HABRVT_API_TREE_POINTER->authenticate_image(cid, ivt_offset, (void **)&start, (size_t *)&bytes, NULL);
+  return g_habrvtTree->authenticate_image(cid, ivt_offset, (void **)&start, (size_t *)&bytes, NULL);
 }
   
 hab_image_entry_f hab_authenticate_image_no_dcd(uint8_t cid, uint32_t ivt_offset, uint32_t start, size_t bytes)
 {
-  return HABRVT_API_TREE_POINTER->authenticate_image_no_dcd(cid, ivt_offset, (void **)&start, (size_t *)&bytes, NULL);
+  return g_habrvtTree->authenticate_image_no_dcd(cid, ivt_offset, (void **)&start, (size_t *)&bytes, NULL);
 }
 
 hab_status_t hab_exit(void)
 {
-  return HABRVT_API_TREE_POINTER->exit();
+  return g_habrvtTree->exit();
 }
 
 hab_status_t hab_rvt_report_status(hab_config_t *config, hab_state_t *state)
 {
-  return HABRVT_API_TREE_POINTER->report_status(config, state);
+  return g_habrvtTree->report_status(config, state);
 }
 
 hab_status_t hab_rvt_report_event(hab_state_t status, uint32_t index, uint8_t *event, size_t *bytes)
 {
-  return HABRVT_API_TREE_POINTER->report_event(status, index, event, bytes);
+  return g_habrvtTree->report_event(status, index, event, bytes);
 }
 
 hab_status_t hab_rvt_check_target(hab_target_t type, const void *start, size_t bytes)
 {
-  return HABRVT_API_TREE_POINTER->check_target(type, start, bytes);
+  return g_habrvtTree->check_target(type, start, bytes);
 }

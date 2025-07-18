@@ -93,7 +93,11 @@ int imx_hab_authenticate_image(uint32_t image_start, uint32_t image_size,
     enum hab_state state = HAB_STATE_NONE;
 #endif
 
-	PRINTF("\nAuthenticate image from location 0x%x...\n", image_start);
+	PRINTF("\nAuthenticate image from location 0x%x...\r\n", image_start);
+
+#if defined(SOC_IMXRT1170_SERIES)
+        HAB_RVT_Init();
+#endif
 
 	/* Verify IVT header */
 	if (verify_ivt_header(&ivt->hdr))
